@@ -1,0 +1,23 @@
+body, html {
+  background-color: #f6f6f6;
+  color: #333;
+  font-family: PT Sans, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 100%;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+*, ::after, ::before {
+  box-sizing: border-box;
+}
+
+ul {
+  list-style: none;
+}
+
+ul, li {
+  margin: 0;
+  padding: 0;
+}
