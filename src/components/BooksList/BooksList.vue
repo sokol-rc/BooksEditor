@@ -6,7 +6,7 @@
           v-for="book in getAllBooks"
           :key="book.id"
       >
-        <book-card :book="book"/>
+        <book-card :book="book" @removeBookById="removeBookById(book.id)"/>
       </li>
     </ul>
   </div>
@@ -15,7 +15,7 @@
 <script>
 import {bookImageBase64} from "@/assets/bookImage";
 import "./BooksList.scss";
-import {mapGetters} from "vuex";
+import {mapGetters, mapMutations} from "vuex";
 import BookCard from "@/components/BookCard/BookCard.vue";
 
 export default {
@@ -30,7 +30,13 @@ export default {
   computed: {
     ...mapGetters(["getAllBooks"]),
   },
-};
+  methods: {
+    ...mapMutations([
+      'removeBookById',
+    ]),
+  }
+}
+;
 </script>
 
 <style scoped lang="scss">

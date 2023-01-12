@@ -1,7 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { bookImageBase64 } from "@/assets/bookImage";
-import * as getters from "@/store/getters";
+import getters from "@/store/getters";
+import mutations from "@/store/mutations";
 
 Vue.use(Vuex);
 
@@ -73,4 +74,5 @@ console.log(getters)
 export default new Vuex.Store({
   state: initialState,
   getters,
+  mutations
 });

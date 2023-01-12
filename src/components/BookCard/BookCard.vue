@@ -29,7 +29,9 @@
     </div>
     <div class="book__controls">
       <button class="edit">Редактировать</button>
-      <button class="remove">Удалить</button>
+      <button class="remove"
+              @click="removeBookById"
+      >Удалить</button>
     </div>
   </div>
 </template>
@@ -45,6 +47,11 @@ export default {
   computed: {
     ...mapGetters(["getAuthorsByBookId"]),
   },
+  methods: {
+    removeBookById() {
+      this.$emit('removeBookById')
+    }
+  }
 }
 </script>
 
