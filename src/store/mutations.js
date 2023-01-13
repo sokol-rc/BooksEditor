@@ -1,7 +1,17 @@
-const removeBookById = (state, bookId) => {
-    state.books = state.books.filter((e)=>e.id !== bookId )
-}
+const setBooks = (state, books) => {
+  state.books = books;
+};
+
+const setBooksCount = (state, booksCount) => {
+  state.booksCount = booksCount;
+};
+
+const setCurrentBooksPage = (state, currentPage) => {
+  state.currentBooksPage = currentPage;
+};
 
 export default {
-    removeBookById
-}
+  setBooks,
+  setBooksCount,
+  setCurrentBooksPage,
+};
