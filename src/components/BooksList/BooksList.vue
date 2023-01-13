@@ -1,6 +1,5 @@
 <template>
   <div>
-    <button type="button" @click="setInitialData">Set initial data</button>
     <ul class="list">
       <li
         class="list__item list__item--background"
@@ -13,7 +12,9 @@
         />
       </li>
     </ul>
-    <div class="list__pagination">
+    <div class="list__pagination"
+         v-if="pages > 0"
+    >
       <nav role="navigation" aria-label="Навигация по страницам">
         <ul class="pagination">
           <li v-for="page in pages" :key="page">

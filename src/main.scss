@@ -21,3 +21,22 @@ ul, li {
   margin: 0;
   padding: 0;
 }
+
+.layout-container {
+  width: 100%;
+  padding: 12px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 960px) {
+  .layout-container {
+    max-width: 900px;
+  }
+}
+
+@media (min-width: 1264px) {
+  .layout-container {
+    max-width: 1185px;
+  }
+}

@@ -1,5 +1,5 @@
-import LocalStorage from "@/storage/LocalStorage";
-import initialData from "@/storage/initialData";
+import LocalStorage from "@/services/storage/LocalStorage";
+import initialData from "@/services/storage/initialData";
 
 const setInitialData = ({ dispatch }) => {
   LocalStorage.set("books", JSON.stringify(initialData));

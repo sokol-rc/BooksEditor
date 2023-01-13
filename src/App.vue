@@ -1,11 +1,9 @@
 <template>
   <div id="app">
-    <header>
-      <div class="logo">Олнайн библиотека</div>
-    </header>
+    <Header/>
     <main class="content">
       <div class="layout-container">
-        <BooksList />
+        <BooksList/>
       </div>
     </main>
   </div>
@@ -14,10 +12,12 @@
 <script>
 import "@/main.scss";
 import BooksList from "@/components/BooksList/BooksList.vue";
+import Header from "@/components/Header/Header.vue";
 
 export default {
   components: {
     BooksList,
+    Header
   },
 };
 </script>
@@ -30,25 +30,9 @@ body {
   font-size: 16px;
   line-height: 1.25;
 }
+
 .content {
   max-width: 100%;
   display: flex;
-}
-
-.layout-container {
-  width: 100%;
-  padding: 12px;
-  margin-right: auto;
-  margin-left: auto;
-}
-@media (min-width: 960px) {
-  .layout-container {
-    max-width: 900px;
-  }
-}
-@media (min-width: 1264px) {
-  .layout-container {
-    max-width: 1185px;
-  }
 }
 </style>
