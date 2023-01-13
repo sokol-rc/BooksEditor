@@ -6,12 +6,21 @@ const setInitialData = ({ dispatch }) => {
   dispatch("getBooksByPage", 1);
 };
 
+const clearStorage = ({dispatch}) => {
+  LocalStorage.clear();
+  dispatch('resetBookState');
+}
+
+const resetBookState = ({commit}) => {
+  commit('resetBookState');
+}
+
 const getBooksByPage = ({ dispatch, commit, state }, pageNumber) => {
   const page = pageNumber || state.currentBooksPage;
   const response = LocalStorage.get("books");
 
   if (!response.success) {
-    commit("setBooks", null);
+    dispatch('resetBookState');
     return;
   }
 
@@ -55,4 +64,6 @@ export default {
   getBooksByPage,
   getBooksCount,
   removeBookById,
+  clearStorage,
+  resetBookState
 };

@@ -6,12 +6,15 @@ import actions from "@/store/actions";
 
 Vue.use(Vuex);
 
-const initialState = {
-  books: null,
-  booksCount: 0,
-  booksPerPage: 4,
-  currentBooksPage: 1,
-};
+export const getInitialState = () => {
+  return {
+    books: [],
+    booksCount: 0,
+    booksPerPage: 4,
+    currentBooksPage: 1,
+  }
+}
+const initialState = getInitialState();
 console.log(getters);
 export default new Vuex.Store({
   state: initialState,

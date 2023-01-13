@@ -30,6 +30,10 @@ class LocalStorage {
   set(key, value) {
     window.localStorage.setItem(key, value);
   }
+
+  clear() {
+    window.localStorage.clear();
+  }
 }
 
 export default new LocalStorage();

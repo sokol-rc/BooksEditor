@@ -39,6 +39,9 @@
 .button:hover::before {
   opacity: 0.1;
 }
+.button + .button {
+  margin-left: 16px;
+}
 
 .button--outlined {
   border: thin solid;

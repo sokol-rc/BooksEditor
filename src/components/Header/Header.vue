@@ -4,7 +4,8 @@
       <div class="header">
         <div class="header__logo">Олнайн библиотека</div>
         <div class="header__controls">
-          <button class="set-data button button--outlined" type="button" @click="setInitialData">Добавить много книг</button>
+          <button class="set-data button button--outlined" type="button" @click="setInitialData">Заполнить хранилище</button>
+          <button class="set-data button button--outlined" type="button" @click="clearStorage">Очистить хранилище</button>
         </div>
       </div>
     </div>
@@ -17,7 +18,7 @@ import {mapActions} from "vuex";
 export default {
   name: 'Header',
   methods: {
-    ...mapActions(["setInitialData"]),
+    ...mapActions(["setInitialData", "clearStorage"]),
   }
 }
 </script>
