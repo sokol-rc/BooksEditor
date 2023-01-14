@@ -26,19 +26,26 @@
       </ul>
     </div>
     <div class="book__controls">
-      <button class="edit">Редактировать</button>
-      <button class="remove" @click.prevent="showConfirmationDialog">
-        Удалить
-      </button>
+      <ButtonIcon>
+        <IconEdit/>
+      </ButtonIcon>
+      <ButtonIcon @click.prevent="showConfirmationDialog">
+        <IconDelete/>
+      </ButtonIcon>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import IconDelete from "@/components/icons/IconDelete.vue";
+import ButtonIcon from "@/components/ui-components/ButtonIcon/ButtonIcon.vue";
+import IconEdit from "@/components/icons/iconEdit.vue";
+import Button from "@/components/ui-components/Button/Button.vue";
 
 export default {
   name: "BookCard",
+  components: {IconEdit, IconDelete,ButtonIcon, Button},
   props: {
     book: Object,
   },

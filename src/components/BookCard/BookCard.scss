@@ -29,6 +29,12 @@
   &__author {
     padding-bottom: 12px;
   }
+  &__controls {
+    max-width: 100px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
 }
 
 .info {
