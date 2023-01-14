@@ -12,8 +12,8 @@ export const getInitialState = () => {
     booksCount: 0,
     booksPerPage: 4,
     currentBooksPage: 1,
-  }
-}
+  };
+};
 const initialState = getInitialState();
 console.log(getters);
 export default new Vuex.Store({

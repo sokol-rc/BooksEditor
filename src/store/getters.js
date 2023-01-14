@@ -1,10 +1,10 @@
-const getAllBooks = (state) => {
+const allBooks = (state) => {
   return state.books;
 };
-const getCurrentBooksPage = (state) => {
+const currentBooksPage = (state) => {
   return state.currentBooksPage;
 };
-const getAuthorsByBookId = (state) => (bookId) => {
+const authorsByBookId = (state) => (bookId) => {
   const currentBook = state.books.find((b) => b.id === bookId);
   if (!currentBook) {
     throw Error("Книга не найдена");
@@ -15,7 +15,7 @@ const getAuthorsByBookId = (state) => (bookId) => {
     .join(", ")}`;
 };
 
-const getPagesCount = (state) => {
+const pagesCount = (state) => {
   if (state.booksCount <= state.booksPerPage) {
     return 0;
   }
@@ -23,8 +23,8 @@ const getPagesCount = (state) => {
 };
 
 export default {
-  getAllBooks,
-  getAuthorsByBookId,
-  getPagesCount,
-  getCurrentBooksPage,
+  allBooks,
+  authorsByBookId,
+  pagesCount,
+  currentBooksPage,
 };

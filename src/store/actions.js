@@ -6,21 +6,21 @@ const setInitialData = ({ dispatch }) => {
   dispatch("getBooksByPage", 1);
 };
 
-const clearStorage = ({dispatch}) => {
+const clearStorage = ({ dispatch }) => {
   LocalStorage.clear();
-  dispatch('resetBookState');
-}
+  dispatch("resetBookState");
+};
 
-const resetBookState = ({commit}) => {
-  commit('resetBookState');
-}
+const resetBookState = ({ commit }) => {
+  commit("RESET_BOOKS_STATE");
+};
 
 const getBooksByPage = ({ dispatch, commit, state }, pageNumber) => {
   const page = pageNumber || state.currentBooksPage;
   const response = LocalStorage.get("books");
 
   if (!response.success) {
-    dispatch('resetBookState');
+    dispatch("resetBookState");
     return;
   }
 
@@ -29,27 +29,29 @@ const getBooksByPage = ({ dispatch, commit, state }, pageNumber) => {
   const books = JSON.parse(response.data).books;
 
   dispatch("getBooksCount");
-  commit("setBooks", books.slice(start, end));
-  commit("setCurrentBooksPage", page);
+  commit("SET_BOOKS", books.slice(start, end));
+  commit("SET_CURRENT_BOOKS_PAGE", page);
 };
 
 const getBooksCount = ({ commit }) => {
   const response = LocalStorage.get("books");
 
   if (!response.success) {
-    commit("setBooksCount", 0);
+    //TODO: add handle error
+    commit("SET_BOOKS_COUNT", 0);
     return;
   }
   console.log(JSON.parse(response.data));
   const booksCount = JSON.parse(response.data).books.length;
-  commit("setBooksCount", booksCount);
+  commit("SET_BOOKS_COUNT", booksCount);
 };
 
 const removeBookById = ({ dispatch, commit }, bookId) => {
   const response = LocalStorage.get("books");
 
   if (!response.success) {
-    commit("setBooks", null);
+    //TODO: add handle error when remove book
+    //commit("setBooks", null);
     return;
   }
   const books = JSON.parse(response.data).books;
@@ -65,5 +67,5 @@ export default {
   getBooksCount,
   removeBookById,
   clearStorage,
-  resetBookState
+  resetBookState,
 };

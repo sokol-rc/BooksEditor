@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <Header/>
+    <HeaderComponent />
     <main class="content">
       <div class="layout-container">
-        <BooksList/>
+        <BooksList />
       </div>
     </main>
   </div>
@@ -12,12 +12,12 @@
 <script>
 import "@/main.scss";
 import BooksList from "@/components/BooksList/BooksList.vue";
-import Header from "@/components/Header/Header.vue";
+import HeaderComponent from "@/components/Header/HeaderComponent.vue";
 
 export default {
   components: {
     BooksList,
-    Header
+    HeaderComponent,
   },
 };
 </script>

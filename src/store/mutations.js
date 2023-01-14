@@ -1,24 +1,24 @@
-import {getInitialState} from "@/store/index";
+import { getInitialState } from "@/store/index";
 
-const setBooks = (state, books) => {
-    state.books = books;
+const SET_BOOKS = (state, books) => {
+  state.books = books;
 };
 
-const setBooksCount = (state, booksCount) => {
-    state.booksCount = booksCount;
+const SET_BOOKS_COUNT = (state, booksCount) => {
+  state.booksCount = booksCount;
 };
 
-const setCurrentBooksPage = (state, currentPage) => {
-    state.currentBooksPage = currentPage;
+const SET_CURRENT_BOOKS_PAGE = (state, currentPage) => {
+  state.currentBooksPage = currentPage;
 };
-const resetBookState = (state) => {
-    console.log(getInitialState())
-    Object.assign(state, getInitialState())
+const RESET_BOOKS_STATE = (state) => {
+  console.log(getInitialState());
+  Object.assign(state, getInitialState());
 };
 
 export default {
-    setBooks,
-    setBooksCount,
-    setCurrentBooksPage,
-    resetBookState
+  SET_BOOKS,
+  SET_BOOKS_COUNT,
+  SET_CURRENT_BOOKS_PAGE,
+  RESET_BOOKS_STATE,
 };

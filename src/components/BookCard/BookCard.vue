@@ -9,7 +9,7 @@
     </div>
     <div class="book__info">
       <h2 class="book__title">{{ book.title }}</h2>
-      <div class="book__author">{{ getAuthorsByBookId(book.id) }}</div>
+      <div class="book__author">{{ authorsByBookId(book.id) }}</div>
     </div>
     <div class="book__info">
       <ul class="info">
@@ -27,10 +27,10 @@
     </div>
     <div class="book__controls">
       <ButtonIcon>
-        <IconEdit/>
+        <IconEdit />
       </ButtonIcon>
       <ButtonIcon @click.prevent="showConfirmationDialog">
-        <IconDelete/>
+        <IconDelete />
       </ButtonIcon>
     </div>
   </div>
@@ -41,16 +41,16 @@ import { mapGetters } from "vuex";
 import IconDelete from "@/components/icons/IconDelete.vue";
 import ButtonIcon from "@/components/ui-components/ButtonIcon/ButtonIcon.vue";
 import IconEdit from "@/components/icons/iconEdit.vue";
-import Button from "@/components/ui-components/Button/Button.vue";
+import Button from "@/components/ui-components/ButtonComponent/ButtonComponent.vue";
 
 export default {
   name: "BookCard",
-  components: {IconEdit, IconDelete,ButtonIcon, Button},
+  components: { IconEdit, IconDelete, ButtonIcon, Button },
   props: {
     book: Object,
   },
   computed: {
-    ...mapGetters(["getAuthorsByBookId"]),
+    ...mapGetters(["authorsByBookId"]),
   },
   methods: {
     showConfirmationDialog() {
