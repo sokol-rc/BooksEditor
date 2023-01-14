@@ -2,7 +2,7 @@
   <div class="dialog-shadow">
     <div
       class="dialog"
-      style="transform-origin: center center 0; max-width: 290px"
+      style="max-width: 290px"
       tabindex="0"
     >
       <div class="card">
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+
 export default {
   name: "ConfirmationDialog",
   methods: {

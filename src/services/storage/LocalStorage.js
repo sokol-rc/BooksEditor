@@ -19,6 +19,11 @@ class LocalStorage {
       error = {};
       data = this._localStorageGet(key);
     }
+    // return {
+    //   success: true,
+    //   data: {books:},
+    //   error: {}
+    // }
 
     return {
       success,

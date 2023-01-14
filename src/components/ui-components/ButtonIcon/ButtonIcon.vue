@@ -1,13 +1,12 @@
 <template>
-  <Button
-    className="button-icon"
+  <ButtonComponent
+    class="button-icon"
     :type="type"
-    :className="className"
     :aria-label="ariaLabel"
     @click="click($event)"
   >
     <slot></slot>
-  </Button>
+  </ButtonComponent>
 </template>
 
 <script>
@@ -18,9 +17,6 @@ export default {
   components: { ButtonComponent },
   props: {
     ariaLabel: {
-      type: String,
-    },
-    className: {
       type: String,
     },
     type: {

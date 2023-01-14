@@ -4,6 +4,9 @@ const allBooks = (state) => {
 const currentBooksPage = (state) => {
   return state.currentBooksPage;
 };
+const loadingStatus = (state) => {
+  return state.loadingStatus;
+};
 const authorsByBookId = (state) => (bookId) => {
   const currentBook = state.books.find((b) => b.id === bookId);
   if (!currentBook) {
@@ -27,4 +30,5 @@ export default {
   authorsByBookId,
   pagesCount,
   currentBooksPage,
+  loadingStatus,
 };

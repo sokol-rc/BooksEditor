@@ -1,63 +1,64 @@
 <template>
   <div>
-    <ul class="list" v-if="books.length > 0">
-      <li
-        class="list__item list__item--background"
-        v-for="book in books"
-        :key="book.id"
-      >
-        <book-card
-          :book="book"
-          @showConfirmationDialog="showConfirmationDialog(book.id)"
-        />
-      </li>
-    </ul>
-    <div class="empty-data" v-else>
-      {{ emptyMessage }}
-    </div>
-    <div class="list__pagination" v-if="pages > 0">
-      <nav role="navigation" aria-label="Навигация по страницам">
-        <ul class="pagination">
-          <li v-for="page in pages" :key="page">
-            <button
-              :class="[
+    <ContentLoader :status="loadingStatus">
+      <template #content>
+        <ul class="list" v-if="books.length > 0">
+          <li
+              class="list__item list__item--background"
+              v-for="book in books"
+              :key="book.id"
+          >
+            <book-card
+                :book="book"
+                @showConfirmationDialog="showConfirmationDialog(book.id)"
+            />
+          </li>
+        </ul>
+        <div class="list__pagination" v-if="pages > 0">
+          <nav role="navigation" aria-label="Навигация по страницам">
+            <ul class="pagination">
+              <li v-for="page in pages" :key="page">
+                <button
+                    :class="[
                 page === currentPage ? 'current-page' : '',
                 'pagination__item',
               ]"
-              @click="changeBooksPage(page)"
-            >
-              {{ page }}
-            </button>
-          </li>
-        </ul>
-      </nav>
-    </div>
+                    @click="getBooksByPage(page)"
+                >
+                  {{ page }}
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </template>
+    </ContentLoader>
 
     <confirmation-dialog
-      v-if="isConfirmationDialogVisible"
-      @handleReject="removeDialogReject"
-      @handleAccept="removeDialogAccept"
+        v-if="isConfirmationDialogVisible"
+        @handleReject="removeDialogReject"
+        @handleAccept="removeDialogAccept"
     />
   </div>
 </template>
 
 <script>
-import { bookImageBase64 } from "@/assets/bookImage";
+import {bookImageBase64} from "@/assets/bookImage";
 import "./BooksList.scss";
-import { mapActions, mapGetters } from "vuex";
+import {mapActions, mapGetters} from "vuex";
 import BookCard from "@/components/BookCard/BookCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog/ConfirmationDialog.vue";
+import ContentLoader from "@/components/ContentLoader/ContentLoader.vue";
 
 export default {
   name: "BooksList",
-  components: { BookCard, ConfirmationDialog },
+  components: {ContentLoader, BookCard, ConfirmationDialog},
   data() {
     return {
       name: "BooksList",
       bookImageBase64,
       isConfirmationDialogVisible: false,
       handleBookId: null,
-      emptyMessage: "Ваша библиотека пуста. Пора добавить книг!",
     };
   },
   computed: {
@@ -65,14 +66,20 @@ export default {
       books: "allBooks",
       pages: "pagesCount",
       currentPage: "currentBooksPage",
+      loadingStatus: "loadingStatus",
     }),
   },
+  beforeMount() {
+    if (!this.loadingStatus && this.loadingStatus !== 'LOADING') {
+      this.getBooksByPage(this.currentPage)
+    }
+  },
+  beforeDestroy() {
+    this.resetBookState();
+  },
+
   methods: {
-    ...mapActions(["setInitialData", "getBooksByPage", "removeBookById"]),
-    changeBooksPage(pageNumber) {
-      this.getBooksByPage(2);
-      //this.getBooksByPage(pageNumber);
-    },
+    ...mapActions(["setInitialData", "getBooksByPage", "removeBookById", "resetBookState"]),
     showConfirmationDialog(bookId) {
       this.isConfirmationDialogVisible = true;
       this.handleBookId = bookId;
@@ -82,8 +89,8 @@ export default {
       this.closeConfirmationDialog();
     },
     removeDialogAccept() {
-      this.handleBookId = null;
       this.removeBookById(this.handleBookId);
+      this.handleBookId = null;
       this.closeConfirmationDialog();
     },
     closeConfirmationDialog() {

@@ -29,7 +29,8 @@
       <ButtonIcon>
         <IconEdit />
       </ButtonIcon>
-      <ButtonIcon @click.prevent="showConfirmationDialog">
+      <ButtonIcon
+          @click.prevent="showConfirmationDialog">
         <IconDelete />
       </ButtonIcon>
     </div>

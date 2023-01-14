@@ -1,5 +1,5 @@
 <template>
-  <button class="button" :class="className" :type="type" @click="click($event)">
+  <button class="button" :type="type" @click="click($event)">
     <slot></slot>
   </button>
 </template>
@@ -8,11 +8,6 @@
 export default {
   name: "ButtonComponent",
   props: {
-    className: {
-      type: String,
-      required: false,
-      default: "button",
-    },
     type: {
       type: String,
       required: false,

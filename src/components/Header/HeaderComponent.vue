@@ -5,13 +5,13 @@
         <div class="header__logo">Олнайн библиотека</div>
         <div class="header__controls">
           <ButtonComponent
-            class-name="set-data button button--outlined"
+            class="set-data button button--outlined"
             type="button"
             @click="setInitialData"
             >Заполнить хранилище
           </ButtonComponent>
           <ButtonComponent
-            class-name="set-data button button--outlined"
+            class="set-data button button--outlined"
             type="button"
             @click="clearStorage"
             >Очистить хранилище

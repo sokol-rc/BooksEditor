@@ -1,5 +1,6 @@
 import LocalStorage from "@/services/storage/LocalStorage";
 import initialData from "@/services/storage/initialData";
+import {loadingStatuses} from "@/store/index";
 
 const setInitialData = ({ dispatch }) => {
   LocalStorage.set("books", JSON.stringify(initialData));
@@ -13,14 +14,16 @@ const clearStorage = ({ dispatch }) => {
 
 const resetBookState = ({ commit }) => {
   commit("RESET_BOOKS_STATE");
+  commit("SET_LOADING_STATUS", loadingStatuses.error);
 };
 
 const getBooksByPage = ({ dispatch, commit, state }, pageNumber) => {
+  commit('SET_LOADING_STATUS', loadingStatuses.loading);
   const page = pageNumber || state.currentBooksPage;
   const response = LocalStorage.get("books");
 
   if (!response.success) {
-    dispatch("resetBookState");
+    commit('SET_LOADING_STATUS', loadingStatuses.error);
     return;
   }
 
@@ -28,26 +31,17 @@ const getBooksByPage = ({ dispatch, commit, state }, pageNumber) => {
   const end = start + state.booksPerPage;
   const books = JSON.parse(response.data).books;
 
-  dispatch("getBooksCount");
+  if (!books.length) {
+    commit('SET_LOADING_STATUS', loadingStatuses.empty);
+  } else {
+    commit('SET_LOADING_STATUS', loadingStatuses.ready);
+  }
   commit("SET_BOOKS", books.slice(start, end));
+  commit("SET_BOOKS_COUNT", books.length)
   commit("SET_CURRENT_BOOKS_PAGE", page);
 };
 
-const getBooksCount = ({ commit }) => {
-  const response = LocalStorage.get("books");
-
-  if (!response.success) {
-    //TODO: add handle error
-    commit("SET_BOOKS_COUNT", 0);
-    return;
-  }
-  console.log(JSON.parse(response.data));
-  const booksCount = JSON.parse(response.data).books.length;
-  commit("SET_BOOKS_COUNT", booksCount);
-};
-
 const removeBookById = ({ dispatch, commit }, bookId) => {
-  console.log(bookId) //null
 
   const response = LocalStorage.get("books");
   if (!response.success) {
@@ -64,7 +58,6 @@ const removeBookById = ({ dispatch, commit }, bookId) => {
 export default {
   setInitialData,
   getBooksByPage,
-  getBooksCount,
   removeBookById,
   clearStorage,
   resetBookState,
