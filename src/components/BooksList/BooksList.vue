@@ -69,6 +69,10 @@ export default {
   },
   methods: {
     ...mapActions(["setInitialData", "getBooksByPage", "removeBookById"]),
+    changeBooksPage(pageNumber) {
+      this.getBooksByPage(2);
+      //this.getBooksByPage(pageNumber);
+    },
     showConfirmationDialog(bookId) {
       this.isConfirmationDialogVisible = true;
       this.handleBookId = bookId;
@@ -84,9 +88,6 @@ export default {
     },
     closeConfirmationDialog() {
       this.isConfirmationDialogVisible = false;
-    },
-    changeBooksPage(pageNumber) {
-      this.getBooksByPage(pageNumber);
     },
   },
 };

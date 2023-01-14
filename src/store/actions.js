@@ -47,11 +47,11 @@ const getBooksCount = ({ commit }) => {
 };
 
 const removeBookById = ({ dispatch, commit }, bookId) => {
-  const response = LocalStorage.get("books");
+  console.log(bookId) //null
 
+  const response = LocalStorage.get("books");
   if (!response.success) {
     //TODO: add handle error when remove book
-    //commit("setBooks", null);
     return;
   }
   const books = JSON.parse(response.data).books;
