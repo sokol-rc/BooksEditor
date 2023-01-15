@@ -38,6 +38,4 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-console.log(router);
-
 export default router;

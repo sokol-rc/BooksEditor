@@ -15,7 +15,7 @@
           </li>
         </ul>
         <div class="list__pagination" v-if="pages > 0">
-          <nav role="navigation" aria-label="Навигация по страницам">
+          <nav aria-label="Навигация по страницам">
             <ul class="pagination">
               <li v-for="page in pages" :key="page">
                 <button
@@ -44,8 +44,8 @@
 </template>
 
 <script>
-import { bookImageBase64 } from "@/assets/bookImage";
 import "./BooksList.scss";
+import { bookImageBase64 } from "@/assets/bookImage";
 import { mapActions, mapGetters } from "vuex";
 import BookCard from "@/components/BookCard/BookCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog/ConfirmationDialog.vue";
@@ -77,8 +77,6 @@ export default {
     }
   },
   created() {
-    console.log("mounted");
-    console.log(this.page);
     this.setCurrentPage(Number(this.page) || 1);
   },
   beforeDestroy() {
@@ -86,7 +84,6 @@ export default {
   },
   watch: {
     currentPage() {
-      console.log(this.currentPage);
       this.getBooksByPage(this.currentPage);
     },
     page() {
@@ -118,7 +115,6 @@ export default {
       this.isConfirmationDialogVisible = false;
     },
     paginate(pageTo) {
-      console.log(pageTo);
       this.$router.push({ name: "booksCatalog", params: { page: pageTo } });
     },
   },
