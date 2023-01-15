@@ -23,9 +23,18 @@ const pagesCount = (state) => {
   return Math.ceil(state.booksCount / state.booksPerPage);
 };
 
+const getSortRules = (state) => {
+  return state.sortRules;
+};
+const getCurrentSort = (state) => {
+  return state.currentSort;
+};
+
 export default {
   allBooks,
   authorsByBookId,
   pagesCount,
   loadingStatus,
+  getSortRules,
+  getCurrentSort,
 };

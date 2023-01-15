@@ -17,6 +17,14 @@ export const getInitialState = () => {
     books: [],
     booksCount: 0,
     booksPerPage: 4,
+    currentPage: 1,
+    currentSort: "title:asc",
+    sortRules: [
+      { key: "title:asc", title: "По заголовку А-Я" },
+      { key: "title:desc", title: "По заголовку Я-А" },
+      { key: "publishedYear:asc", title: "По году публикации Стрелочка вверх" },
+      { key: "publishedYear:desc", title: "По году публикации Стрелочка вниз" },
+    ],
     loadingStatus: null,
   };
 };

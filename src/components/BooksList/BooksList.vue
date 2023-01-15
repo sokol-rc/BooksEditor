@@ -1,16 +1,17 @@
 <template>
   <div>
+    <SortForm @setSortValue="setSortValue" />
     <ContentLoader :status="loadingStatus">
       <template #content>
         <ul class="list" v-if="books.length > 0">
           <li
-              class="list__item list__item--background"
-              v-for="book in books"
-              :key="book.id"
+            class="list__item list__item--background"
+            v-for="book in books"
+            :key="book.id"
           >
             <book-card
-                :book="book"
-                @showConfirmationDialog="showConfirmationDialog(book.id)"
+              :book="book"
+              @showConfirmationDialog="showConfirmationDialog(book.id)"
             />
           </li>
         </ul>
@@ -19,10 +20,13 @@
             <ul class="pagination">
               <li v-for="page in pages" :key="page">
                 <ButtonComponent
-                    :class="[page === currentPage ? 'current-page' : '','pagination__item',]"
-                    :disabled="page === currentPage"
-                    @click="paginate(page)"
-                >{{ page }}
+                  :class="[
+                    page === currentPage ? 'current-page' : '',
+                    'pagination__item',
+                  ]"
+                  :disabled="page === currentPage"
+                  @click="paginate(page)"
+                  >{{ page }}
                 </ButtonComponent>
               </li>
             </ul>
@@ -32,25 +36,32 @@
     </ContentLoader>
 
     <confirmation-dialog
-        v-if="isConfirmationDialogVisible"
-        @handleReject="removeDialogReject"
-        @handleAccept="removeDialogAccept"
+      v-if="isConfirmationDialogVisible"
+      @handleReject="removeDialogReject"
+      @handleAccept="removeDialogAccept"
     />
   </div>
 </template>
 
 <script>
 import "./BooksList.scss";
-import {bookImageBase64} from "@/assets/bookImage";
-import {mapActions, mapGetters} from "vuex";
+import { bookImageBase64 } from "@/assets/bookImage";
+import { mapActions, mapGetters } from "vuex";
 import BookCard from "@/components/BookCard/BookCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog/ConfirmationDialog.vue";
 import ContentLoader from "@/components/ContentLoader/ContentLoader.vue";
 import ButtonComponent from "@/components/ui-components/ButtonComponent/ButtonComponent.vue";
+import SortForm from "@/components/SortForm/SortForm.vue";
 
 export default {
   name: "BooksList",
-  components: {ButtonComponent, ContentLoader, BookCard, ConfirmationDialog},
+  components: {
+    ButtonComponent,
+    ContentLoader,
+    BookCard,
+    ConfirmationDialog,
+    SortForm,
+  },
   data() {
     return {
       name: "BooksList",
@@ -65,27 +76,31 @@ export default {
       books: "allBooks",
       pages: "pagesCount",
       loadingStatus: "loadingStatus",
+      currentSort: "getCurrentSort",
     }),
     currentPage() {
       return parseFloat(this.page) || 1;
-    }
+    },
   },
   created() {
-    this.GET_BOOKS_BY_PAGE(Number(this.currentPage));
+    this.GET_BOOKS({ pageNumber: this.currentPage });
   },
   beforeDestroy() {
     this.RESET_BOOKS_STATE();
   },
   watch: {
-    currentPage() {
-      this.GET_BOOKS_BY_PAGE(Number(this.currentPage));
+    currentPage(newPage) {
+      this.CHANGE_CURRENT_PAGE(newPage);
+      this.GET_BOOKS({ pageNumber: newPage });
     },
   },
   methods: {
     ...mapActions([
-      "GET_BOOKS_BY_PAGE",
+      "GET_BOOKS",
       "DELETE_BOOK_BY_ID",
       "RESET_BOOKS_STATE",
+      "CHANGE_CURRENT_SORT",
+      "CHANGE_CURRENT_PAGE",
     ]),
     showConfirmationDialog(bookId) {
       this.isConfirmationDialogVisible = true;
@@ -103,8 +118,12 @@ export default {
     closeConfirmationDialog() {
       this.isConfirmationDialogVisible = false;
     },
+    setSortValue(sortValue) {
+      this.CHANGE_CURRENT_SORT(sortValue);
+      this.GET_BOOKS({ pageNumber: this.currentPage });
+    },
     paginate(pageTo) {
-      this.$router.push({name: "booksCatalog", params: {page: pageTo}});
+      this.$router.push({ name: "booksCatalog", params: { page: pageTo } });
     },
   },
 };

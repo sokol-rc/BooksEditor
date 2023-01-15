@@ -2,9 +2,9 @@
   <div class="book">
     <div class="book__image">
       <img
-          class="image-responsive"
-          :src="book.preview.image"
-          :alt="book.preview.alt"
+        class="image-responsive"
+        :src="book.preview.image"
+        :alt="book.preview.alt"
       />
     </div>
     <div class="book__info">
@@ -26,28 +26,25 @@
       </ul>
     </div>
     <div class="book__controls">
-      <ButtonIcon
-          ariaLabel="редактировать">
-        <IconEdit/>
+      <ButtonIcon ariaLabel="редактировать">
+        <IconEdit />
       </ButtonIcon>
-      <ButtonIcon
-          ariaLabel="удалить"
-          @click.prevent="showConfirmationDialog">
-        <IconDelete/>
+      <ButtonIcon ariaLabel="удалить" @click.prevent="showConfirmationDialog">
+        <IconDelete />
       </ButtonIcon>
     </div>
   </div>
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 import IconDelete from "@/components/icons/IconDelete.vue";
 import ButtonIcon from "@/components/ui-components/ButtonIcon/ButtonIcon.vue";
 import IconEdit from "@/components/icons/iconEdit.vue";
 
 export default {
   name: "BookCard",
-  components: {IconEdit, IconDelete, ButtonIcon},
+  components: { IconEdit, IconDelete, ButtonIcon },
   props: {
     book: Object,
   },
