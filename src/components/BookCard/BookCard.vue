@@ -29,8 +29,7 @@
       <ButtonIcon>
         <IconEdit />
       </ButtonIcon>
-      <ButtonIcon
-          @click.prevent="showConfirmationDialog">
+      <ButtonIcon @click.prevent="showConfirmationDialog">
         <IconDelete />
       </ButtonIcon>
     </div>
@@ -42,11 +41,10 @@ import { mapGetters } from "vuex";
 import IconDelete from "@/components/icons/IconDelete.vue";
 import ButtonIcon from "@/components/ui-components/ButtonIcon/ButtonIcon.vue";
 import IconEdit from "@/components/icons/iconEdit.vue";
-import Button from "@/components/ui-components/ButtonComponent/ButtonComponent.vue";
 
 export default {
   name: "BookCard",
-  components: { IconEdit, IconDelete, ButtonIcon, Button },
+  components: { IconEdit, IconDelete, ButtonIcon },
   props: {
     book: Object,
   },

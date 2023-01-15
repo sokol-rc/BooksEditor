@@ -1,10 +1,6 @@
 <template>
   <div class="dialog-shadow">
-    <div
-      class="dialog"
-      style="max-width: 290px"
-      tabindex="0"
-    >
+    <div class="dialog" style="max-width: 290px" tabindex="0">
       <div class="card">
         <div class="card__title">Удалить эту книгу?</div>
         <slot></slot>
@@ -30,7 +26,6 @@
 </template>
 
 <script>
-
 export default {
   name: "ConfirmationDialog",
   methods: {

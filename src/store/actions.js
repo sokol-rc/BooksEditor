@@ -1,6 +1,6 @@
 import LocalStorage from "@/services/storage/LocalStorage";
 import initialData from "@/services/storage/initialData";
-import {loadingStatuses} from "@/store/index";
+import { loadingStatuses } from "@/store/index";
 
 const setInitialData = ({ dispatch }) => {
   LocalStorage.set("books", JSON.stringify(initialData));
@@ -12,18 +12,22 @@ const clearStorage = ({ dispatch }) => {
   dispatch("resetBookState");
 };
 
+const setCurrentPage = ({ commit }, pageNumber) => {
+  commit("SET_CURRENT_BOOKS_PAGE", pageNumber);
+};
+
 const resetBookState = ({ commit }) => {
   commit("RESET_BOOKS_STATE");
   commit("SET_LOADING_STATUS", loadingStatuses.error);
 };
 
-const getBooksByPage = ({ dispatch, commit, state }, pageNumber) => {
-  commit('SET_LOADING_STATUS', loadingStatuses.loading);
+const getBooksByPage = ({ commit, state }, pageNumber) => {
+  commit("SET_LOADING_STATUS", loadingStatuses.loading);
   const page = pageNumber || state.currentBooksPage;
   const response = LocalStorage.get("books");
 
   if (!response.success) {
-    commit('SET_LOADING_STATUS', loadingStatuses.error);
+    commit("SET_LOADING_STATUS", loadingStatuses.error);
     return;
   }
 
@@ -32,17 +36,16 @@ const getBooksByPage = ({ dispatch, commit, state }, pageNumber) => {
   const books = JSON.parse(response.data).books;
 
   if (!books.length) {
-    commit('SET_LOADING_STATUS', loadingStatuses.empty);
+    commit("SET_LOADING_STATUS", loadingStatuses.empty);
   } else {
-    commit('SET_LOADING_STATUS', loadingStatuses.ready);
+    commit("SET_LOADING_STATUS", loadingStatuses.ready);
   }
   commit("SET_BOOKS", books.slice(start, end));
-  commit("SET_BOOKS_COUNT", books.length)
+  commit("SET_BOOKS_COUNT", books.length);
   commit("SET_CURRENT_BOOKS_PAGE", page);
 };
 
-const removeBookById = ({ dispatch, commit }, bookId) => {
-
+const removeBookById = ({ dispatch }, bookId) => {
   const response = LocalStorage.get("books");
   if (!response.success) {
     //TODO: add handle error when remove book
@@ -61,4 +64,5 @@ export default {
   removeBookById,
   clearStorage,
   resetBookState,
+  setCurrentPage,
 };

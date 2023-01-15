@@ -7,18 +7,18 @@ import actions from "@/store/actions";
 Vue.use(Vuex);
 
 export const loadingStatuses = {
-  loading: 'LOADING',
-  ready: 'READY',
-  empty: 'EMPTY',
-  error: 'ERROR'
-}
+  loading: "LOADING",
+  ready: "READY",
+  empty: "EMPTY",
+  error: "ERROR",
+};
 export const getInitialState = () => {
   return {
     books: [],
     booksCount: 0,
     booksPerPage: 4,
     currentBooksPage: 1,
-    loadingStatus: null
+    loadingStatus: null,
   };
 };
 const initialState = getInitialState();

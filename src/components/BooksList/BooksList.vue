@@ -4,13 +4,13 @@
       <template #content>
         <ul class="list" v-if="books.length > 0">
           <li
-              class="list__item list__item--background"
-              v-for="book in books"
-              :key="book.id"
+            class="list__item list__item--background"
+            v-for="book in books"
+            :key="book.id"
           >
             <book-card
-                :book="book"
-                @showConfirmationDialog="showConfirmationDialog(book.id)"
+              :book="book"
+              @showConfirmationDialog="showConfirmationDialog(book.id)"
             />
           </li>
         </ul>
@@ -19,11 +19,12 @@
             <ul class="pagination">
               <li v-for="page in pages" :key="page">
                 <button
-                    :class="[
-                page === currentPage ? 'current-page' : '',
-                'pagination__item',
-              ]"
-                    @click="getBooksByPage(page)"
+                  :class="[
+                    page === currentPage ? 'current-page' : '',
+                    'pagination__item',
+                  ]"
+                  :disabled="page === currentPage"
+                  @click="paginate(page)"
                 >
                   {{ page }}
                 </button>
@@ -35,24 +36,24 @@
     </ContentLoader>
 
     <confirmation-dialog
-        v-if="isConfirmationDialogVisible"
-        @handleReject="removeDialogReject"
-        @handleAccept="removeDialogAccept"
+      v-if="isConfirmationDialogVisible"
+      @handleReject="removeDialogReject"
+      @handleAccept="removeDialogAccept"
     />
   </div>
 </template>
 
 <script>
-import {bookImageBase64} from "@/assets/bookImage";
+import { bookImageBase64 } from "@/assets/bookImage";
 import "./BooksList.scss";
-import {mapActions, mapGetters} from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import BookCard from "@/components/BookCard/BookCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog/ConfirmationDialog.vue";
 import ContentLoader from "@/components/ContentLoader/ContentLoader.vue";
 
 export default {
   name: "BooksList",
-  components: {ContentLoader, BookCard, ConfirmationDialog},
+  components: { ContentLoader, BookCard, ConfirmationDialog },
   data() {
     return {
       name: "BooksList",
@@ -61,6 +62,7 @@ export default {
       handleBookId: null,
     };
   },
+  props: ["page"],
   computed: {
     ...mapGetters({
       books: "allBooks",
@@ -70,16 +72,35 @@ export default {
     }),
   },
   beforeMount() {
-    if (!this.loadingStatus && this.loadingStatus !== 'LOADING') {
-      this.getBooksByPage(this.currentPage)
+    if (!this.loadingStatus && this.loadingStatus !== "LOADING") {
+      this.getBooksByPage(this.currentPage);
     }
+  },
+  created() {
+    console.log("mounted");
+    console.log(this.page);
+    this.setCurrentPage(Number(this.page) || 1);
   },
   beforeDestroy() {
     this.resetBookState();
   },
-
+  watch: {
+    currentPage() {
+      console.log(this.currentPage);
+      this.getBooksByPage(this.currentPage);
+    },
+    page() {
+      this.setCurrentPage(Number(this.page) || 1);
+    },
+  },
   methods: {
-    ...mapActions(["setInitialData", "getBooksByPage", "removeBookById", "resetBookState"]),
+    ...mapActions([
+      "setInitialData",
+      "getBooksByPage",
+      "removeBookById",
+      "resetBookState",
+      "setCurrentPage",
+    ]),
     showConfirmationDialog(bookId) {
       this.isConfirmationDialogVisible = true;
       this.handleBookId = bookId;
@@ -95,6 +116,10 @@ export default {
     },
     closeConfirmationDialog() {
       this.isConfirmationDialogVisible = false;
+    },
+    paginate(pageTo) {
+      console.log(pageTo);
+      this.$router.push({ name: "booksCatalog", params: { page: pageTo } });
     },
   },
 };

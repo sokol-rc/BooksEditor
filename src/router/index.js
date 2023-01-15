@@ -1,27 +1,43 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import HomeView from "../views/HomeView.vue";
 
 Vue.use(VueRouter);
 
+const lazyLoad = (componentName) => {
+  return () => import(`@/components/${componentName}/${componentName}.vue`);
+};
+
 const router = new VueRouter({
   mode: "history",
-  base: import.meta.env.BASE_URL,
   routes: [
     {
       path: "/",
-      name: "home",
-      component: HomeView,
+      redirect: { name: "booksCatalog", params: { page: 1 } },
     },
     {
-      path: "/about",
-      name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import("../views/AboutView.vue"),
+      path: "/catalog/",
+      component: lazyLoad("BooksList"),
+      props: true,
+      children: [
+        {
+          path: "/catalog/:page",
+          name: "booksCatalog",
+          component: lazyLoad("BooksList"),
+          props: true,
+        },
+      ],
     },
   ],
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.name === "booksCatalog" && parseFloat(to.params.page) === 1) {
+    router.push({ path: "/catalog/" });
+  } else {
+    next();
+  }
+});
+
+console.log(router);
 
 export default router;

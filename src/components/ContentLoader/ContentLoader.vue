@@ -3,7 +3,10 @@
     <slot v-if="status === $options.loadingStatuses.loading" name="loading">
       <div class="loader">Загрузка...</div>
     </slot>
-    <slot v-else-if="status === $options.loadingStatuses.ready" name="content"></slot>
+    <slot
+      v-else-if="status === $options.loadingStatuses.ready"
+      name="content"
+    ></slot>
     <slot v-else-if="status === $options.loadingStatuses.empty" name="empty">
       Ваша библиотека пуста. Пора добавить книг!
     </slot>
@@ -14,23 +17,21 @@
 </template>
 
 <script>
-import {loadingStatuses} from "@/store";
+import { loadingStatuses } from "@/store";
 
 export default {
-  name: 'ContentLoader',
+  name: "ContentLoader",
   props: {
     status: {
       type: String,
       required: true,
       validator(value) {
         return Object.values(loadingStatuses).includes(value);
-      }
-    }
+      },
+    },
   },
-  loadingStatuses
-}
+  loadingStatuses,
+};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

@@ -3,20 +3,18 @@
     <HeaderComponent />
     <main class="content">
       <div class="layout-container">
-        <BooksList />
+        <router-view></router-view>
       </div>
     </main>
   </div>
 </template>
 
 <script>
-import "@/main.scss";
-import BooksList from "@/components/BooksList/BooksList.vue";
 import HeaderComponent from "@/components/Header/HeaderComponent.vue";
+import "@/main.scss";
 
 export default {
   components: {
-    BooksList,
     HeaderComponent,
   },
 };
