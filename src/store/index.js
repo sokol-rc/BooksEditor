@@ -18,6 +18,13 @@ export const getInitialState = () => {
     booksCount: 0,
     booksPerPage: 4,
     loadingStatus: null,
+    sortRules: [
+      { key: 'title:asc', title: 'По заголовку А-Я', selected: true },
+      { key: 'title:desc', title: 'По заголовку Я-А', selected: false },
+      { key: 'publishedYear:asc', title: 'По году публикации Стрелочка вверх', selected: false },
+      { key: 'publishedYear:desc', title: 'По году публикации Стрелочка вниз', selected: false }
+    ],
+    currentSort: 'title:asc'
   };
 };
 const initialState = getInitialState();

@@ -8,7 +8,8 @@ const actionTypes = {
     CLEAR_STORAGE: 'CLEAR_STORAGE',
     RESET_BOOKS_STATE: 'RESET_BOOKS_STATE',
     GET_BOOKS_BY_PAGE: 'GET_BOOKS_BY_PAGE',
-    DELETE_BOOK_BY_ID: 'DELETE_BOOK_BY_ID'
+    DELETE_BOOK_BY_ID: 'DELETE_BOOK_BY_ID',
+    DO_SORT: 'DO_SORT'
 }
 
 const actions = {
@@ -59,6 +60,16 @@ const actions = {
 
         dispatch(actionTypes.GET_BOOKS_BY_PAGE);
     },
+    [actionTypes.DO_SORT]({dispatch, commit}, newSort) {
+        dispatch(actionTypes.GET_BOOKS_BY_PAGE)
+        commit('SET_CURRENT_SORT', newSort);
+
+        const [sortKey, sortDir] = newSort.split(':')
+
+
+
+
+    }
 }
 
 

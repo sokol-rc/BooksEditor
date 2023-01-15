@@ -5,6 +5,7 @@ export const mutationTypes = {
   SET_BOOKS_COUNT: "SET_BOOKS_COUNT",
   SET_LOADING_STATUS: "SET_LOADING_STATUS",
   RESET_BOOKS_STATE: "RESET_BOOKS_STATE",
+  SET_CURRENT_SORT: "SET_CURRENT_SORT"
 };
 
 const mutations = {
@@ -19,6 +20,9 @@ const mutations = {
   },
   [mutationTypes.RESET_BOOKS_STATE](state) {
     Object.assign(state, getInitialState());
+  },
+  [mutationTypes.SET_CURRENT_SORT](state, newSort) {
+    state.currentSort = newSort;
   },
 };
 

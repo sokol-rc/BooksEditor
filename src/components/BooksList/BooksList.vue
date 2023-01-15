@@ -1,5 +1,6 @@
 <template>
   <div>
+<SortForm/>
     <ContentLoader :status="loadingStatus">
       <template #content>
         <ul class="list" v-if="books.length > 0">
@@ -47,10 +48,11 @@ import BookCard from "@/components/BookCard/BookCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog/ConfirmationDialog.vue";
 import ContentLoader from "@/components/ContentLoader/ContentLoader.vue";
 import ButtonComponent from "@/components/ui-components/ButtonComponent/ButtonComponent.vue";
+import SortForm from "@/components/SortForm/SortForm.vue";
 
 export default {
   name: "BooksList",
-  components: {ButtonComponent, ContentLoader, BookCard, ConfirmationDialog},
+  components: {ButtonComponent, ContentLoader, BookCard, ConfirmationDialog, SortForm},
   data() {
     return {
       name: "BooksList",
