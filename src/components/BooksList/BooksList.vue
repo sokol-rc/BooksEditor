@@ -4,13 +4,13 @@
       <template #content>
         <ul class="list" v-if="books.length > 0">
           <li
-            class="list__item list__item--background"
-            v-for="book in books"
-            :key="book.id"
+              class="list__item list__item--background"
+              v-for="book in books"
+              :key="book.id"
           >
             <book-card
-              :book="book"
-              @showConfirmationDialog="showConfirmationDialog(book.id)"
+                :book="book"
+                @showConfirmationDialog="showConfirmationDialog(book.id)"
             />
           </li>
         </ul>
@@ -18,16 +18,12 @@
           <nav aria-label="Навигация по страницам">
             <ul class="pagination">
               <li v-for="page in pages" :key="page">
-                <button
-                  :class="[
-                    page === currentPage ? 'current-page' : '',
-                    'pagination__item',
-                  ]"
-                  :disabled="page === currentPage"
-                  @click="paginate(page)"
-                >
-                  {{ page }}
-                </button>
+                <ButtonComponent
+                    :class="[page === currentPage ? 'current-page' : '','pagination__item',]"
+                    :disabled="page === currentPage"
+                    @click="paginate(page)"
+                >{{ page }}
+                </ButtonComponent>
               </li>
             </ul>
           </nav>
@@ -36,24 +32,25 @@
     </ContentLoader>
 
     <confirmation-dialog
-      v-if="isConfirmationDialogVisible"
-      @handleReject="removeDialogReject"
-      @handleAccept="removeDialogAccept"
+        v-if="isConfirmationDialogVisible"
+        @handleReject="removeDialogReject"
+        @handleAccept="removeDialogAccept"
     />
   </div>
 </template>
 
 <script>
 import "./BooksList.scss";
-import { bookImageBase64 } from "@/assets/bookImage";
-import { mapActions, mapGetters } from "vuex";
+import {bookImageBase64} from "@/assets/bookImage";
+import {mapActions, mapGetters} from "vuex";
 import BookCard from "@/components/BookCard/BookCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog/ConfirmationDialog.vue";
 import ContentLoader from "@/components/ContentLoader/ContentLoader.vue";
+import ButtonComponent from "@/components/ui-components/ButtonComponent/ButtonComponent.vue";
 
 export default {
   name: "BooksList",
-  components: { ContentLoader, BookCard, ConfirmationDialog },
+  components: {ButtonComponent, ContentLoader, BookCard, ConfirmationDialog},
   data() {
     return {
       name: "BooksList",
@@ -67,36 +64,28 @@ export default {
     ...mapGetters({
       books: "allBooks",
       pages: "pagesCount",
-      currentPage: "currentBooksPage",
       loadingStatus: "loadingStatus",
     }),
-  },
-  beforeMount() {
-    if (!this.loadingStatus && this.loadingStatus !== "LOADING") {
-      this.getBooksByPage(this.currentPage);
+    currentPage() {
+      return parseFloat(this.page) || 1;
     }
   },
   created() {
-    this.setCurrentPage(Number(this.page) || 1);
+    this.GET_BOOKS_BY_PAGE(Number(this.currentPage));
   },
   beforeDestroy() {
-    this.resetBookState();
+    this.RESET_BOOKS_STATE();
   },
   watch: {
     currentPage() {
-      this.getBooksByPage(this.currentPage);
-    },
-    page() {
-      this.setCurrentPage(Number(this.page) || 1);
+      this.GET_BOOKS_BY_PAGE(Number(this.currentPage));
     },
   },
   methods: {
     ...mapActions([
-      "setInitialData",
-      "getBooksByPage",
-      "removeBookById",
-      "resetBookState",
-      "setCurrentPage",
+      "GET_BOOKS_BY_PAGE",
+      "DELETE_BOOK_BY_ID",
+      "RESET_BOOKS_STATE",
     ]),
     showConfirmationDialog(bookId) {
       this.isConfirmationDialogVisible = true;
@@ -107,7 +96,7 @@ export default {
       this.closeConfirmationDialog();
     },
     removeDialogAccept() {
-      this.removeBookById(this.handleBookId);
+      this.DELETE_BOOK_BY_ID(this.handleBookId);
       this.handleBookId = null;
       this.closeConfirmationDialog();
     },
@@ -115,7 +104,7 @@ export default {
       this.isConfirmationDialogVisible = false;
     },
     paginate(pageTo) {
-      this.$router.push({ name: "booksCatalog", params: { page: pageTo } });
+      this.$router.push({name: "booksCatalog", params: {page: pageTo}});
     },
   },
 };

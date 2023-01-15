@@ -18,9 +18,11 @@ export default {
   props: {
     ariaLabel: {
       type: String,
+      required: false,
     },
     type: {
       type: String,
+      required: false,
       default: "button",
     },
   },

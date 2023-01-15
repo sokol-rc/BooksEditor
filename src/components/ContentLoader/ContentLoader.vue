@@ -1,23 +1,23 @@
 <template>
   <div>
-    <slot v-if="status === $options.loadingStatuses.loading" name="loading">
+    <slot v-if="status === loadingStatuses.loading" name="loading">
       <div class="loader">Загрузка...</div>
     </slot>
     <slot
-      v-else-if="status === $options.loadingStatuses.ready"
-      name="content"
+        v-else-if="status === loadingStatuses.ready"
+        name="content"
     ></slot>
-    <slot v-else-if="status === $options.loadingStatuses.empty" name="empty">
+    <slot v-else-if="status === loadingStatuses.empty" name="empty">
       Ваша библиотека пуста. Пора добавить книг!
     </slot>
-    <slot v-else-if="status === $options.loadingStatuses.error" name="error">
+    <slot v-else-if="status === loadingStatuses.error" name="error">
       Произошла ошибка при загрузке данных.
     </slot>
   </div>
 </template>
 
 <script>
-import { loadingStatuses } from "@/store";
+import {loadingStatuses} from "@/store";
 
 export default {
   name: "ContentLoader",
@@ -26,11 +26,16 @@ export default {
       type: String,
       required: true,
       validator(value) {
+        console.log('validation')
         return Object.values(loadingStatuses).includes(value);
       },
     },
   },
-  loadingStatuses,
+  data() {
+    return {
+      loadingStatuses
+    }
+  },
 };
 </script>
 

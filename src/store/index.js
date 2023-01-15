@@ -17,7 +17,6 @@ export const getInitialState = () => {
     books: [],
     booksCount: 0,
     booksPerPage: 4,
-    currentBooksPage: 1,
     loadingStatus: null,
   };
 };

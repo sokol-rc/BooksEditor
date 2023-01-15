@@ -27,6 +27,10 @@ const router = new VueRouter({
         },
       ],
     },
+    {
+      path: "*",
+      component: { render: (h) => h("div", ["404! Страница не найдена."]) },
+    },
   ],
 });
 

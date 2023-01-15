@@ -1,9 +1,7 @@
 const allBooks = (state) => {
   return state.books;
 };
-const currentBooksPage = (state) => {
-  return state.currentBooksPage;
-};
+
 const loadingStatus = (state) => {
   return state.loadingStatus;
 };
@@ -29,6 +27,5 @@ export default {
   allBooks,
   authorsByBookId,
   pagesCount,
-  currentBooksPage,
   loadingStatus,
 };

@@ -7,13 +7,13 @@
           <ButtonComponent
             class="set-data button button--outlined"
             type="button"
-            @click="setInitialData"
+            @click="SET_INITIAL_DATA"
             >Заполнить хранилище
           </ButtonComponent>
           <ButtonComponent
             class="set-data button button--outlined"
             type="button"
-            @click="clearStorage"
+            @click="CLEAR_STORAGE"
             >Очистить хранилище
           </ButtonComponent>
         </div>
@@ -30,7 +30,7 @@ export default {
   name: "HeaderComponent",
   components: { ButtonComponent },
   methods: {
-    ...mapActions(["setInitialData", "clearStorage"]),
+    ...mapActions(["SET_INITIAL_DATA", "CLEAR_STORAGE"]),
   },
 };
 </script>

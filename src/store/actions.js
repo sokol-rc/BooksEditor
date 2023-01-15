@@ -1,68 +1,65 @@
 import LocalStorage from "@/services/storage/LocalStorage";
 import initialData from "@/services/storage/initialData";
-import { loadingStatuses } from "@/store/index";
+import {loadingStatuses} from "@/store/index";
+import {mutationTypes} from "@/store/mutations";
 
-const setInitialData = ({ dispatch }) => {
-  LocalStorage.set("books", JSON.stringify(initialData));
-  dispatch("getBooksByPage", 1);
-};
+const actionTypes = {
+    SET_INITIAL_DATA: 'SET_INITIAL_DATA',
+    CLEAR_STORAGE: 'CLEAR_STORAGE',
+    RESET_BOOKS_STATE: 'RESET_BOOKS_STATE',
+    GET_BOOKS_BY_PAGE: 'GET_BOOKS_BY_PAGE',
+    DELETE_BOOK_BY_ID: 'DELETE_BOOK_BY_ID'
+}
 
-const clearStorage = ({ dispatch }) => {
-  LocalStorage.clear();
-  dispatch("resetBookState");
-};
+const actions = {
+    [actionTypes.SET_INITIAL_DATA]({dispatch}) {
+        LocalStorage.set("books", JSON.stringify(initialData));
+        dispatch(actionTypes.GET_BOOKS_BY_PAGE, 1);
+    },
+    [actionTypes.CLEAR_STORAGE]({dispatch}) {
+        LocalStorage.clear();
+        dispatch(actionTypes.RESET_BOOKS_STATE);
+    },
+    [actionTypes.RESET_BOOKS_STATE]({commit}) {
+        commit(mutationTypes.RESET_BOOKS_STATE);
+        commit(mutationTypes.SET_LOADING_STATUS, loadingStatuses.error);
+    },
+    [actionTypes.GET_BOOKS_BY_PAGE]({commit, state}, pageNumber = 1) {
+        commit(mutationTypes.SET_LOADING_STATUS, loadingStatuses.loading);
+        const response = LocalStorage.get("books");
 
-const setCurrentPage = ({ commit }, pageNumber) => {
-  commit("SET_CURRENT_BOOKS_PAGE", pageNumber);
-};
+        if (!response.success) {
+            commit(mutationTypes.SET_LOADING_STATUS, loadingStatuses.error);
+            return;
+        }
 
-const resetBookState = ({ commit }) => {
-  commit("RESET_BOOKS_STATE");
-  commit("SET_LOADING_STATUS", loadingStatuses.error);
-};
+        const start = (pageNumber - 1) * state.booksPerPage;
+        const end = start + state.booksPerPage;
+        const books = JSON.parse(response.data).books;
 
-const getBooksByPage = ({ commit, state }, pageNumber) => {
-  commit("SET_LOADING_STATUS", loadingStatuses.loading);
-  const page = pageNumber || state.currentBooksPage;
-  const response = LocalStorage.get("books");
+        if (!books.length) {
+            commit(mutationTypes.SET_LOADING_STATUS, loadingStatuses.empty);
+        } else {
+            commit(mutationTypes.SET_LOADING_STATUS, loadingStatuses.ready);
+        }
+        commit(mutationTypes.SET_BOOKS, books.slice(start, end));
+        commit(mutationTypes.SET_BOOKS_COUNT, books.length);
+    },
+    [actionTypes.DELETE_BOOK_BY_ID]({dispatch}, bookId) {
+        const response = LocalStorage.get("books");
 
-  if (!response.success) {
-    commit("SET_LOADING_STATUS", loadingStatuses.error);
-    return;
-  }
+        if (!response.success) {
+            //TODO: add handle error when remove book
+            return;
+        }
+        const books = JSON.parse(response.data).books;
+        const newBooks = books.filter((b) => b.id !== bookId);
 
-  const start = (page - 1) * state.booksPerPage;
-  const end = start + state.booksPerPage;
-  const books = JSON.parse(response.data).books;
+        LocalStorage.set("books", JSON.stringify({books: newBooks}));
 
-  if (!books.length) {
-    commit("SET_LOADING_STATUS", loadingStatuses.empty);
-  } else {
-    commit("SET_LOADING_STATUS", loadingStatuses.ready);
-  }
-  commit("SET_BOOKS", books.slice(start, end));
-  commit("SET_BOOKS_COUNT", books.length);
-  commit("SET_CURRENT_BOOKS_PAGE", page);
-};
+        dispatch(actionTypes.GET_BOOKS_BY_PAGE);
+    },
+}
 
-const removeBookById = ({ dispatch }, bookId) => {
-  const response = LocalStorage.get("books");
-  if (!response.success) {
-    //TODO: add handle error when remove book
-    return;
-  }
-  const books = JSON.parse(response.data).books;
 
-  const newBooks = books.filter((b) => b.id !== bookId);
-  LocalStorage.set("books", JSON.stringify({ books: newBooks }));
-  dispatch("getBooksByPage");
-};
-
-export default {
-  setInitialData,
-  getBooksByPage,
-  removeBookById,
-  clearStorage,
-  resetBookState,
-  setCurrentPage,
-};
+export default actions;
