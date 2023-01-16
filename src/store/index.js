@@ -19,6 +19,7 @@ export const getInitialState = () => {
     booksPerPage: 4,
     currentPage: 1,
     currentSort: "title:asc",
+    searchQuery: "",
     sortRules: [
       { key: "title:asc", title: "По заголовку А-Я" },
       { key: "title:desc", title: "По заголовку Я-А" },
@@ -26,13 +27,6 @@ export const getInitialState = () => {
       { key: "publishedYear:desc", title: "По году публикации Стрелочка вниз" },
     ],
     loadingStatus: null,
-    sortRules: [
-      { key: 'title:asc', title: 'По заголовку А-Я', selected: true },
-      { key: 'title:desc', title: 'По заголовку Я-А', selected: false },
-      { key: 'publishedYear:asc', title: 'По году публикации Стрелочка вверх', selected: false },
-      { key: 'publishedYear:desc', title: 'По году публикации Стрелочка вниз', selected: false }
-    ],
-    currentSort: 'title:asc'
   };
 };
 const initialState = getInitialState();

@@ -1,6 +1,6 @@
 <template>
-  <div class="dialog-shadow">
-    <div class="dialog" style="max-width: 290px" tabindex="0">
+  <div class="dialog-shadow" @click="handleReject">
+    <div class="dialog" @click.stop style="max-width: 290px" tabindex="0">
       <div class="card">
         <div class="card__title">Удалить эту книгу?</div>
         <slot></slot>
@@ -28,12 +28,23 @@
 <script>
 export default {
   name: "ConfirmationDialog",
+  mounted() {
+    document.addEventListener("keydown", this.handleEscape);
+  },
+  beforeDestroy() {
+    document.removeEventListener("keydown", this.handleEscape);
+  },
   methods: {
     handleReject() {
       this.$emit("handleReject");
     },
     handleAccept() {
       this.$emit("handleAccept");
+    },
+    handleEscape(e) {
+      if (e.code === "Escape") {
+        this.handleReject();
+      }
     },
   },
 };

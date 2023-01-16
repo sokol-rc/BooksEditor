@@ -3,6 +3,7 @@ import initialData from "@/services/storage/initialData";
 import { loadingStatuses } from "@/store/index";
 import { mutationTypes } from "@/store/mutations";
 import { sortBooks } from "@/utils/sort";
+import { searchBooks } from "@/utils/search";
 
 const actionTypes = {
   SET_INITIAL_DATA: "SET_INITIAL_DATA",
@@ -12,6 +13,7 @@ const actionTypes = {
   DELETE_BOOK_BY_ID: "DELETE_BOOK_BY_ID",
   CHANGE_CURRENT_SORT: "CHANGE_CURRENT_SORT",
   CHANGE_CURRENT_PAGE: "CHANGE_CURRENT_PAGE",
+  CHANGE_SEARCH_QUERY: "CHANGE_SEARCH_QUERY",
 };
 
 const actions = {
@@ -38,8 +40,15 @@ const actions = {
 
     const start = (pageNumber - 1) * state.booksPerPage;
     const end = start + state.booksPerPage;
-    const [sortKey, sortDir] = state.currentSort.split(":");
     let books = JSON.parse(response.data).books;
+
+    //search
+    if (state.searchQuery !== "") {
+      books = searchBooks(books, state.searchQuery);
+    }
+
+    //sorting
+    const [sortKey, sortDir] = state.currentSort.split(":");
     books = sortBooks(books, sortKey, sortDir);
 
     if (!books.length) {
@@ -51,7 +60,7 @@ const actions = {
     commit(mutationTypes.SET_BOOKS, books.slice(start, end));
     commit(mutationTypes.SET_BOOKS_COUNT, books.length);
   },
-  [actionTypes.DELETE_BOOK_BY_ID]({ dispatch }, bookId) {
+  [actionTypes.DELETE_BOOK_BY_ID]({ dispatch, state }, bookId) {
     const response = LocalStorage.get("books");
 
     if (!response.success) {
@@ -63,13 +72,16 @@ const actions = {
 
     LocalStorage.set("books", JSON.stringify({ books: newBooks }));
 
-    dispatch(actionTypes.GET_BOOKS);
+    dispatch(actionTypes.GET_BOOKS, { pageNumber: state.currentPage });
   },
   [actionTypes.CHANGE_CURRENT_SORT]({ commit }, newSort) {
     commit("SET_CURRENT_SORT", newSort);
   },
   [actionTypes.CHANGE_CURRENT_PAGE]({ commit }, newPage) {
     commit("SET_CURRENT_PAGE", newPage);
+  },
+  [actionTypes.CHANGE_SEARCH_QUERY]({ commit }, newQuery) {
+    commit("SET_SEARCH_QUERY", newQuery);
   },
 };
 

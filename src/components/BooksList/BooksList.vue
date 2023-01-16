@@ -1,5 +1,6 @@
 <template>
   <div>
+    <SearchForm />
     <SortForm @setSortValue="setSortValue" />
     <ContentLoader :status="loadingStatus">
       <template #content>
@@ -35,7 +36,7 @@
       </template>
     </ContentLoader>
 
-    <confirmation-dialog
+    <ConfirmationDialog
       v-if="isConfirmationDialogVisible"
       @handleReject="removeDialogReject"
       @handleAccept="removeDialogAccept"
@@ -52,6 +53,7 @@ import ConfirmationDialog from "@/components/ConfirmationDialog/ConfirmationDial
 import ContentLoader from "@/components/ContentLoader/ContentLoader.vue";
 import ButtonComponent from "@/components/ui-components/ButtonComponent/ButtonComponent.vue";
 import SortForm from "@/components/SortForm/SortForm.vue";
+import SearchForm from "@/components/SearchForm/SearchForm.vue";
 
 export default {
   name: "BooksList",
@@ -61,6 +63,7 @@ export default {
     BookCard,
     ConfirmationDialog,
     SortForm,
+    SearchForm,
   },
   data() {
     return {
@@ -83,6 +86,8 @@ export default {
     },
   },
   created() {
+    //looking like bad practise
+    this.CHANGE_SEARCH_QUERY(this.$route.query.q);
     this.GET_BOOKS({ pageNumber: this.currentPage });
   },
   beforeDestroy() {
@@ -101,6 +106,7 @@ export default {
       "RESET_BOOKS_STATE",
       "CHANGE_CURRENT_SORT",
       "CHANGE_CURRENT_PAGE",
+      "CHANGE_SEARCH_QUERY",
     ]),
     showConfirmationDialog(bookId) {
       this.isConfirmationDialogVisible = true;
@@ -123,6 +129,7 @@ export default {
       this.GET_BOOKS({ pageNumber: this.currentPage });
     },
     paginate(pageTo) {
+      console.log(111);
       this.$router.push({ name: "booksCatalog", params: { page: pageTo } });
     },
   },

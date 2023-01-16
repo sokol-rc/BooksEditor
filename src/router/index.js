@@ -28,6 +28,12 @@ const router = new VueRouter({
       ],
     },
     {
+      name: "search",
+      path: "/search/",
+      component: lazyLoad("BooksList"),
+      props: true,
+    },
+    {
       path: "*",
       component: { render: (h) => h("div", ["404! Страница не найдена."]) },
     },
@@ -40,6 +46,12 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
+});
+
+router.beforeResolve((to, from, next) => {
+  console.log(to);
+  console.log(from);
+  next();
 });
 
 export default router;

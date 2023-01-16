@@ -7,6 +7,7 @@ export const mutationTypes = {
   RESET_BOOKS_STATE: "RESET_BOOKS_STATE",
   SET_CURRENT_SORT: "SET_CURRENT_SORT",
   SET_CURRENT_PAGE: "SET_CURRENT_PAGE",
+  SET_SEARCH_QUERY: "SET_SEARCH_QUERY",
 };
 
 const mutations = {
@@ -27,6 +28,9 @@ const mutations = {
   },
   [mutationTypes.SET_CURRENT_PAGE](state, newPage) {
     state.currentPage = newPage;
+  },
+  [mutationTypes.SET_SEARCH_QUERY](state, newQuery) {
+    state.searchQuery = newQuery;
   },
 };
 
