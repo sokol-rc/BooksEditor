@@ -2,7 +2,10 @@
   <header>
     <div class="layout-container">
       <div class="header">
-        <div class="header__logo">Олнайн библиотека</div>
+        <router-link to="/">
+          <div class="header__logo">Олнайн библиотека</div>
+        </router-link>
+
         <div class="header__controls">
           <ButtonComponent
             class="set-data button button--outlined"
@@ -36,5 +39,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "./HeaderComponent.scss";
+.header {
+  display: flex;
+  justify-content: space-between;
+
+  &__controls {
+  }
+}
+
+.button + .button {
+  margin-left: 16px;
+}
 </style>

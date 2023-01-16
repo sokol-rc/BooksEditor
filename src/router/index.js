@@ -3,9 +3,11 @@ import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
 
-const lazyLoad = (componentName) => {
-  return () => import(`@/components/${componentName}/${componentName}.vue`);
+const lazyLoad = (componentName, folder) => {
+  return () => import(`@/${folder}/${componentName}/${componentName}.vue`);
 };
+
+//TODO: добавить обработку возврата по истории
 
 const router = new VueRouter({
   mode: "history",
@@ -16,21 +18,27 @@ const router = new VueRouter({
     },
     {
       path: "/catalog/",
-      component: lazyLoad("BooksList"),
+      component: lazyLoad("BooksList", "components"),
       props: true,
       children: [
         {
           path: "/catalog/:page",
           name: "booksCatalog",
-          component: lazyLoad("BooksList"),
+          component: lazyLoad("BooksList", "components"),
           props: true,
         },
       ],
     },
     {
+      path: "/catalog/book/:bookId",
+      name: "editBookView",
+      component: lazyLoad("EditBookView", "views"),
+      props: true,
+    },
+    {
       name: "search",
       path: "/search/",
-      component: lazyLoad("BooksList"),
+      component: lazyLoad("BooksList", "components"),
       props: true,
     },
     {

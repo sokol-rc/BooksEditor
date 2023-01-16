@@ -10,6 +10,7 @@ const actionTypes = {
   CLEAR_STORAGE: "CLEAR_STORAGE",
   RESET_BOOKS_STATE: "RESET_BOOKS_STATE",
   GET_BOOKS: "GET_BOOKS",
+  GET_BOOK_BY_ID: "GET_BOOK_BY_ID",
   DELETE_BOOK_BY_ID: "DELETE_BOOK_BY_ID",
   CHANGE_CURRENT_SORT: "CHANGE_CURRENT_SORT",
   CHANGE_CURRENT_PAGE: "CHANGE_CURRENT_PAGE",
@@ -18,7 +19,7 @@ const actionTypes = {
 
 const actions = {
   [actionTypes.SET_INITIAL_DATA]({ dispatch }) {
-    LocalStorage.set("books", JSON.stringify(initialData));
+    LocalStorage.set("books", initialData);
     dispatch(actionTypes.GET_BOOKS, { pageNumber: 1 });
   },
   [actionTypes.CLEAR_STORAGE]({ dispatch }) {
@@ -31,7 +32,7 @@ const actions = {
   },
   [actionTypes.GET_BOOKS]({ commit, state }, { pageNumber }) {
     commit(mutationTypes.SET_LOADING_STATUS, loadingStatuses.loading);
-    const response = LocalStorage.get("books");
+    const response = LocalStorage.getAll("books");
 
     if (!response.success) {
       commit(mutationTypes.SET_LOADING_STATUS, loadingStatuses.error);
@@ -40,7 +41,7 @@ const actions = {
 
     const start = (pageNumber - 1) * state.booksPerPage;
     const end = start + state.booksPerPage;
-    let books = JSON.parse(response.data).books;
+    let books = response.data.books;
 
     //search
     if (state.searchQuery !== "") {
@@ -60,8 +61,26 @@ const actions = {
     commit(mutationTypes.SET_BOOKS, books.slice(start, end));
     commit(mutationTypes.SET_BOOKS_COUNT, books.length);
   },
+  [actionTypes.GET_BOOK_BY_ID]({ commit }, bookId) {
+    commit(mutationTypes.SET_LOADING_STATUS, loadingStatuses.loading);
+
+    const response = LocalStorage.getAll("books");
+
+    if (!response.success) {
+      commit(mutationTypes.SET_LOADING_STATUS, loadingStatuses.error);
+      return;
+    }
+
+    const books = JSON.parse(response.data).books;
+    console.log(books.find((b) => b.id === bookId));
+
+    commit(
+      mutationTypes.SET_BOOKS,
+      books.find((b) => b.id === bookId)
+    );
+  },
   [actionTypes.DELETE_BOOK_BY_ID]({ dispatch, state }, bookId) {
-    const response = LocalStorage.get("books");
+    const response = LocalStorage.getAll("books");
 
     if (!response.success) {
       //TODO: add handle error when remove book
@@ -70,7 +89,7 @@ const actions = {
     const books = JSON.parse(response.data).books;
     const newBooks = books.filter((b) => b.id !== bookId);
 
-    LocalStorage.set("books", JSON.stringify({ books: newBooks }));
+    LocalStorage.set("books", { books: newBooks });
 
     dispatch(actionTypes.GET_BOOKS, { pageNumber: state.currentPage });
   },
@@ -81,7 +100,8 @@ const actions = {
     commit("SET_CURRENT_PAGE", newPage);
   },
   [actionTypes.CHANGE_SEARCH_QUERY]({ commit }, newQuery) {
-    commit("SET_SEARCH_QUERY", newQuery);
+    const queryString = newQuery || "";
+    commit("SET_SEARCH_QUERY", queryString);
   },
 };
 

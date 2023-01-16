@@ -9,12 +9,7 @@ export default {
         image: bookImageBase64,
         alt: "Обожка книги Эта книга самая лучшая книга н",
       },
-      authors: [
-        {
-          id: 1,
-          lastName: "Иванов",
-        },
-      ],
+      authors: "Иванов",
       publisher: "КнигаКнигаКнига",
       published: 1,
       publishedYear: 2022,
@@ -28,16 +23,7 @@ export default {
         image: bookImageBase64,
         alt: "Обожка книги Гарри Поттер",
       },
-      authors: [
-        {
-          id: 1,
-          lastName: "Иванов",
-        },
-        {
-          id: 2,
-          lastName: "Петров",
-        },
-      ],
+      authors: "Иванов",
       publisher: "Другое издательство",
       published: 1,
       publishedYear: 2021,
@@ -51,12 +37,7 @@ export default {
         image: bookImageBase64,
         alt: "Обожка книги Гарри Поттер 2",
       },
-      authors: [
-        {
-          id: 1,
-          lastName: "Сидоров",
-        },
-      ],
+      authors: "Иванов",
       publisher: "",
       published: 1,
       circulationDate: "01.12.2021",
@@ -69,12 +50,7 @@ export default {
         image: bookImageBase64,
         alt: "Обожка книги Гарри Поттер 2",
       },
-      authors: [
-        {
-          id: 1,
-          lastName: "Сидоров",
-        },
-      ],
+      authors: "Иванов",
       publisher: "",
       published: 1,
       circulationDate: "01.12.2021",
@@ -87,12 +63,7 @@ export default {
         image: bookImageBase64,
         alt: "Обожка книги Гарри Поттер 2",
       },
-      authors: [
-        {
-          id: 1,
-          lastName: "Сидоров",
-        },
-      ],
+      authors: "Иванов",
       publisher: "",
       published: 1,
       circulationDate: "01.12.2021",
@@ -105,12 +76,7 @@ export default {
         image: bookImageBase64,
         alt: "Обожка книги Гарри Поттер 2",
       },
-      authors: [
-        {
-          id: 1,
-          lastName: "Сидоров",
-        },
-      ],
+      authors: "Иванов",
       publisher: "",
       published: 1,
       circulationDate: "01.12.2021",

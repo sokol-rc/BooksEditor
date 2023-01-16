@@ -10,7 +10,7 @@
             v-for="book in books"
             :key="book.id"
           >
-            <book-card
+            <BookCard
               :book="book"
               @showConfirmationDialog="showConfirmationDialog(book.id)"
             />
@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import "./BooksList.scss";
 import { bookImageBase64 } from "@/assets/bookImage";
 import { mapActions, mapGetters } from "vuex";
 import BookCard from "@/components/BookCard/BookCard.vue";
@@ -86,7 +85,8 @@ export default {
     },
   },
   created() {
-    //looking like bad practise
+    //
+    console.log(this.$route.query.q);
     this.CHANGE_SEARCH_QUERY(this.$route.query.q);
     this.GET_BOOKS({ pageNumber: this.currentPage });
   },
@@ -128,8 +128,8 @@ export default {
       this.CHANGE_CURRENT_SORT(sortValue);
       this.GET_BOOKS({ pageNumber: this.currentPage });
     },
+
     paginate(pageTo) {
-      console.log(111);
       this.$router.push({ name: "booksCatalog", params: { page: pageTo } });
     },
   },
@@ -137,5 +137,53 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "./BooksList.scss";
+$cardBackgroundColor: #fff;
+$shadowColor: rgba(0, 0, 0, 0.2);
+$shadow: 0 3px 1px -2px $shadowColor, 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+  0 1px 5px 0 rgba(0, 0, 0, 0.12);
+$paginationActivePageBackgroundColor: #1867c0;
+$paginationActivePageColor: #fff;
+
+.list {
+  grid-gap: 10px;
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-bottom: 30px;
+
+  &__item--background {
+    background-color: $cardBackgroundColor;
+    border-radius: 8px;
+    box-shadow: $shadow;
+  }
+}
+
+.pagination {
+  align-items: center;
+  display: flex;
+  list-style-type: none;
+  justify-content: center;
+  margin: 0;
+  max-width: 100%;
+  width: 100%;
+
+  &__item {
+    border-radius: 8px;
+    font-size: 18px;
+    height: 34px;
+    margin: 4px;
+    min-width: 34px;
+    padding: 0 5px;
+    box-shadow: $shadow;
+    text-align: center;
+    background: #fff;
+    border-style: none;
+    cursor: pointer;
+  }
+}
+
+.current-page {
+  color: $paginationActivePageColor;
+  background-color: $paginationActivePageBackgroundColor;
+  border-color: $paginationActivePageBackgroundColor;
+}
 </style>

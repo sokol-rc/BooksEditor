@@ -44,5 +44,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./SortForm.scss";
+$shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+$cardBackgroundColor: #fff;
+.sort {
+  margin-bottom: 10px;
+  &__wrapper {
+    display: flex;
+    padding: 16px;
+  }
+
+  &__wrapper--background {
+    background-color: $cardBackgroundColor;
+    border-radius: 8px;
+    box-shadow: $shadow;
+  }
+
+  &__label {
+    margin-right: 10px;
+  }
+}
 </style>

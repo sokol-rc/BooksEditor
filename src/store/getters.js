@@ -1,19 +1,12 @@
 const allBooks = (state) => {
   return state.books;
 };
+const getBookById = (state) => (bookId) => {
+  return state.books.find((b) => b.id === bookId);
+};
 
 const loadingStatus = (state) => {
   return state.loadingStatus;
-};
-const authorsByBookId = (state) => (bookId) => {
-  const currentBook = state.books.find((b) => b.id === bookId);
-  if (!currentBook) {
-    throw Error("Книга не найдена");
-  }
-  const { authors } = currentBook;
-  return `${authors.length > 1 ? "Авторы" : "Автор"}: ${authors
-    .map((a) => a.lastName)
-    .join(", ")}`;
 };
 
 const pagesCount = (state) => {
@@ -32,9 +25,9 @@ const getCurrentSort = (state) => {
 
 export default {
   allBooks,
-  authorsByBookId,
   pagesCount,
   loadingStatus,
   getSortRules,
   getCurrentSort,
+  getBookById,
 };

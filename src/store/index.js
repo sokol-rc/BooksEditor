@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import getters from "@/store/getters";
 import mutations from "@/store/mutations";
 import actions from "@/store/actions";
+import modules from "@/store/modules";
 
 Vue.use(Vuex);
 
@@ -32,6 +33,7 @@ export const getInitialState = () => {
 const initialState = getInitialState();
 
 export default new Vuex.Store({
+  modules,
   state: initialState,
   getters,
   mutations,
