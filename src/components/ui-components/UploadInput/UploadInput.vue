@@ -7,12 +7,11 @@
         type="file"
         @change="makePreviewImage"
         accept="image/*"
-        ref="file"
       />
       <span class="upload-input__label">Выберите изображение</span>
     </label>
-    <div v-if="previewImageData" class="preview">
-      <img class="preview__img" :src="previewImageData" :alt="alt" />
+    <div v-if="preview" class="preview">
+      <img class="preview__img" :src="preview" :alt="alt" />
     </div>
   </div>
 </template>
@@ -28,11 +27,6 @@ export default {
     alt: {
       type: String,
       default: "Изображение",
-    },
-  },
-  computed: {
-    previewImageData() {
-      return this.preview;
     },
   },
   methods: {

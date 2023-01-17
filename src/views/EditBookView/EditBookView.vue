@@ -60,7 +60,20 @@
           </div>
         </div>
         <div class="form__controls">
-          <ButtonComponent @click="saveBook">Сохранить</ButtonComponent>
+          <ButtonComponent class="save" @click="saveBook"
+            >Сохранить
+          </ButtonComponent>
+          <div
+            :class="[
+              'edit-status',
+              editStatus.success
+                ? 'edit-status--success'
+                : 'edit-status--error',
+            ]"
+            v-if="editStatus"
+          >
+            {{ editStatus?.message }}
+          </div>
         </div>
       </div>
     </div>
@@ -72,6 +85,8 @@ import BaseInput from "@/components/ui-components/BaseInput/BaseInput.vue";
 import { mapActions, mapGetters } from "vuex";
 import UploadInput from "@/components/ui-components/UploadInput/UploadInput.vue";
 import ButtonComponent from "@/components/ui-components/ButtonComponent/ButtonComponent.vue";
+import { GET_BOOK, GET_EDIT_STATUS } from "@/store/types/getters.type";
+import { FETCH_BOOK, SAVE_BOOK, SET_IMAGE } from "@/store/types/actions.type";
 
 export default {
   name: "EditBookView",
@@ -80,14 +95,15 @@ export default {
   props: ["bookId"],
   computed: {
     ...mapGetters("bookItem", {
-      book: "GET_BOOK",
+      book: GET_BOOK,
+      editStatus: GET_EDIT_STATUS,
     }),
   },
   created() {
     this.FETCH_BOOK(parseFloat(this.bookId));
   },
   methods: {
-    ...mapActions("bookItem", ["FETCH_BOOK", "SAVE_BOOK", "SET_IMAGE"]),
+    ...mapActions("bookItem", [FETCH_BOOK, SAVE_BOOK, SET_IMAGE]),
     saveBook() {
       this.SAVE_BOOK(this.book);
     },
@@ -99,6 +115,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$success: #008000;
+$error: #ff0000;
 .form {
   &__wrapper {
     padding: 24px 16px;
@@ -122,7 +140,25 @@ export default {
     grid-column: span 2;
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
   }
+}
+
+.save {
+  margin-bottom: 10px;
+}
+
+.edit-status {
+  display: flex;
+  justify-content: center;
+}
+
+.edit-status--success {
+  color: $success;
+}
+
+.edit-status--error {
+  color: $error;
 }
 </style>
