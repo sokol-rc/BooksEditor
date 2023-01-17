@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SearchForm />
+    <SearchForm :query="query" @handleSubmit="doSearch" />
     <SortForm @setSortValue="setSortValue" />
     <ContentLoader :status="loadingStatus">
       <template #content>
@@ -12,7 +12,8 @@
           >
             <BookCard
               :book="book"
-              @showConfirmationDialog="showConfirmationDialog(book.id)"
+              @deleteBook="showConfirmationDialog(book.id)"
+              @editBook="goToEditBook(book.id)"
             />
           </li>
         </ul>
@@ -20,7 +21,7 @@
           <nav aria-label="Навигация по страницам">
             <ul class="pagination">
               <li v-for="page in pages" :key="page">
-                <ButtonComponent
+                <BaseButton
                   :class="[
                     page === currentPage ? 'current-page' : '',
                     'pagination__item',
@@ -28,7 +29,7 @@
                   :disabled="page === currentPage"
                   @click="paginate(page)"
                   >{{ page }}
-                </ButtonComponent>
+                </BaseButton>
               </li>
             </ul>
           </nav>
@@ -50,14 +51,28 @@ import { mapActions, mapGetters } from "vuex";
 import BookCard from "@/components/BookCard/BookCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog/ConfirmationDialog.vue";
 import ContentLoader from "@/components/ContentLoader/ContentLoader.vue";
-import ButtonComponent from "@/components/ui-components/ButtonComponent/ButtonComponent.vue";
+import BaseButton from "@/components/ui-components/BaseButton/BaseButton.vue";
 import SortForm from "@/components/SortForm/SortForm.vue";
 import SearchForm from "@/components/SearchForm/SearchForm.vue";
+import {
+  GET_BOOKS,
+  GET_CURRENT_SORT,
+  GET_LOADING_STATUS,
+  GET_PAGES_COUNT,
+} from "@/store/types/getters.type";
+import {
+  CHANGE_CURRENT_PAGE,
+  CHANGE_CURRENT_SORT,
+  CHANGE_SEARCH_QUERY,
+  DELETE_BOOK_BY_ID,
+  FETCH_BOOKS,
+  RESET_BOOKS_STATE,
+} from "@/store/types/actions.type";
 
 export default {
   name: "BooksList",
   components: {
-    ButtonComponent,
+    BaseButton,
     ContentLoader,
     BookCard,
     ConfirmationDialog,
@@ -72,23 +87,21 @@ export default {
       handleBookId: null,
     };
   },
-  props: ["page"],
+  props: ["page", "query"],
   computed: {
-    ...mapGetters({
-      books: "allBooks",
-      pages: "pagesCount",
-      loadingStatus: "loadingStatus",
-      currentSort: "getCurrentSort",
+    ...mapGetters("bookList", {
+      books: GET_BOOKS,
+      pages: GET_PAGES_COUNT,
+      loadingStatus: GET_LOADING_STATUS,
+      currentSort: GET_CURRENT_SORT,
     }),
     currentPage() {
       return parseFloat(this.page) || 1;
     },
   },
   created() {
-    //
-    console.log(this.$route.query.q);
-    this.CHANGE_SEARCH_QUERY(this.$route.query.q);
-    this.GET_BOOKS({ pageNumber: this.currentPage });
+    this.CHANGE_SEARCH_QUERY(this.query);
+    this.FETCH_BOOKS({ pageNumber: this.currentPage });
   },
   beforeDestroy() {
     this.RESET_BOOKS_STATE();
@@ -96,21 +109,38 @@ export default {
   watch: {
     currentPage(newPage) {
       this.CHANGE_CURRENT_PAGE(newPage);
-      this.GET_BOOKS({ pageNumber: newPage });
+      this.FETCH_BOOKS({ pageNumber: newPage });
+    },
+    query(newQuery) {
+      this.CHANGE_SEARCH_QUERY(newQuery);
+      this.FETCH_BOOKS();
     },
   },
   methods: {
-    ...mapActions([
-      "GET_BOOKS",
-      "DELETE_BOOK_BY_ID",
-      "RESET_BOOKS_STATE",
-      "CHANGE_CURRENT_SORT",
-      "CHANGE_CURRENT_PAGE",
-      "CHANGE_SEARCH_QUERY",
+    ...mapActions("bookList", [
+      FETCH_BOOKS,
+      DELETE_BOOK_BY_ID,
+      RESET_BOOKS_STATE,
+      CHANGE_CURRENT_SORT,
+      CHANGE_CURRENT_PAGE,
+      CHANGE_SEARCH_QUERY,
     ]),
     showConfirmationDialog(bookId) {
       this.isConfirmationDialogVisible = true;
       this.handleBookId = bookId;
+    },
+    goToEditBook(bookId) {
+      console.log(bookId);
+      this.$router.push({
+        name: "editBookView",
+        params: { bookId: bookId },
+      });
+    },
+    doSearch(query) {
+      if (query !== "") {
+        this.CHANGE_SEARCH_QUERY(query);
+        this.$router.push({ name: "search", query: { q: query } });
+      }
     },
     removeDialogReject() {
       this.handleBookId = null;
@@ -126,7 +156,7 @@ export default {
     },
     setSortValue(sortValue) {
       this.CHANGE_CURRENT_SORT(sortValue);
-      this.GET_BOOKS({ pageNumber: this.currentPage });
+      this.FETCH_BOOKS({ pageNumber: this.currentPage });
     },
 
     paginate(pageTo) {

@@ -39,7 +39,7 @@ const router = new VueRouter({
       name: "search",
       path: "/search/",
       component: lazyLoad("BooksList", "components"),
-      props: true,
+      props: (route) => ({ query: route.query.q }),
     },
     {
       path: "*",
@@ -57,8 +57,8 @@ router.beforeEach((to, from, next) => {
 });
 
 router.beforeResolve((to, from, next) => {
-  console.log(to);
-  console.log(from);
+  // console.log(to);
+  // console.log(from);
   next();
 });
 

@@ -62,9 +62,9 @@
               </div>
             </div>
             <div class="form__controls">
-              <ButtonComponent class="save" border @click="saveBook"
+              <BaseButton class="save" border @click="saveBook"
                 >Сохранить
-              </ButtonComponent>
+              </BaseButton>
               <div
                 :class="[
                   'edit-status',
@@ -88,7 +88,7 @@
 import BaseInput from "@/components/ui-components/BaseInput/BaseInput.vue";
 import { mapActions, mapGetters } from "vuex";
 import UploadInput from "@/components/ui-components/UploadInput/UploadInput.vue";
-import ButtonComponent from "@/components/ui-components/ButtonComponent/ButtonComponent.vue";
+import BaseButton from "@/components/ui-components/BaseButton/BaseButton.vue";
 import {
   GET_BOOK,
   GET_EDIT_STATUS,
@@ -99,7 +99,7 @@ import ContentLoader from "@/components/ContentLoader/ContentLoader.vue";
 
 export default {
   name: "EditBookView",
-  components: { ContentLoader, ButtonComponent, UploadInput, BaseInput },
+  components: { ContentLoader, BaseButton, UploadInput, BaseInput },
   // почему не [String, Number]?
   props: ["bookId"],
   computed: {
@@ -109,7 +109,7 @@ export default {
       loadingStatus: GET_LOADING_STATUS,
     }),
   },
-  created() {
+  mounted() {
     this.FETCH_BOOK(parseFloat(this.bookId));
   },
   methods: {

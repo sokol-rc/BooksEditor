@@ -13,6 +13,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { GET_CURRENT_SORT, GET_SORT_RULES } from "@/store/types/getters.type";
 
 export default {
   name: "SortForm",
@@ -22,9 +23,9 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({
-      sortRules: "getSortRules",
-      currentSort: "getCurrentSort",
+    ...mapGetters("bookList", {
+      sortRules: GET_SORT_RULES,
+      currentSort: GET_CURRENT_SORT,
     }),
     selectSort: {
       get() {
@@ -48,6 +49,7 @@ $shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
 $cardBackgroundColor: #fff;
 .sort {
   margin-bottom: 10px;
+
   &__wrapper {
     display: flex;
     padding: 16px;

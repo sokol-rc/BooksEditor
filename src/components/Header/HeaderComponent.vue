@@ -7,18 +7,20 @@
         </router-link>
 
         <div class="header__controls">
-          <ButtonComponent
+          <BaseButton
             class="set-data button button--outlined"
             type="button"
+            border
             @click="SET_INITIAL_DATA"
             >Заполнить хранилище
-          </ButtonComponent>
-          <ButtonComponent
+          </BaseButton>
+          <BaseButton
             class="set-data button button--outlined"
             type="button"
+            border
             @click="CLEAR_STORAGE"
             >Очистить хранилище
-          </ButtonComponent>
+          </BaseButton>
         </div>
       </div>
     </div>
@@ -27,13 +29,14 @@
 
 <script>
 import { mapActions } from "vuex";
-import ButtonComponent from "@/components/ui-components/ButtonComponent/ButtonComponent.vue";
+import BaseButton from "@/components/ui-components/BaseButton/BaseButton.vue";
+import { CLEAR_STORAGE, SET_INITIAL_DATA } from "@/store/types/actions.type";
 
 export default {
   name: "HeaderComponent",
-  components: { ButtonComponent },
+  components: { BaseButton },
   methods: {
-    ...mapActions(["SET_INITIAL_DATA", "CLEAR_STORAGE"]),
+    ...mapActions("bookList", [SET_INITIAL_DATA, CLEAR_STORAGE]),
   },
 };
 </script>

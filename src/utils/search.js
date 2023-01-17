@@ -1,5 +1,2 @@
-export const searchBooks = (array, searchQuery) => {
-  return array.filter((item) => {
-    item.title.toLowerCase().includes(searchQuery);
-  });
-};
+export const searchBooks = (array, searchQuery) =>
+  array.filter((item) => item.title.toLowerCase().includes(searchQuery));

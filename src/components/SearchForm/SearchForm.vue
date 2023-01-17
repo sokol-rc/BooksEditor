@@ -1,7 +1,7 @@
 <template>
   <div class="search">
     <div class="search__wrapper search__wrapper--background">
-      <form class="search__form" @submit.prevent="doSearch">
+      <form class="search__form" @submit.prevent="handleSubmit">
         <label class="search__label visually-hidden" for="search-input"
           >Найти книгу</label
         >
@@ -10,7 +10,7 @@
           v-focus="isFocused"
           id="search-input"
           type="search"
-          v-model.trim="query"
+          v-model.trim="searchQuery"
           placeholder="Найти книгу"
         />
         <ButtonIcon type="submit">
@@ -37,23 +37,25 @@ export default {
   components: { IconEdit, ButtonIcon },
   data() {
     return {
-      query: "",
+      searchQuery: this.query,
       isFocused: false,
     };
+  },
+  props: {
+    query: {
+      type: String,
+      default: "",
+    },
   },
   computed: {
     urlQuery() {
       //need to encode string?
-      return this.query;
+      return this.searchQuery;
     },
   },
   methods: {
-    doSearch() {
-      if (this.query === "") {
-        this.setFocusToInput();
-      } else {
-        this.$router.push({ name: "search", query: { q: this.urlQuery } });
-      }
+    handleSubmit() {
+      this.$emit("handleSubmit", this.urlQuery);
     },
     setFocusToInput() {
       this.isFocused = true;

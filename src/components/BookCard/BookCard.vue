@@ -9,7 +9,7 @@
     </div>
     <div class="book__info">
       <h2 class="book__title">{{ book.title }}</h2>
-      <div class="book__author">{{ book.authors }}</div>
+      <div class="book__author">Автор: {{ book.authors }}</div>
     </div>
     <div class="book__info">
       <ul class="info">
@@ -26,10 +26,10 @@
       </ul>
     </div>
     <div class="book__controls">
-      <ButtonIcon ariaLabel="редактировать" @click.prevent="goToEditBook">
+      <ButtonIcon ariaLabel="редактировать" @click.prevent="editBook">
         <IconEdit />
       </ButtonIcon>
-      <ButtonIcon ariaLabel="удалить" @click.prevent="showConfirmationDialog">
+      <ButtonIcon ariaLabel="удалить" @click.prevent="deleteBook">
         <IconDelete />
       </ButtonIcon>
     </div>
@@ -48,14 +48,11 @@ export default {
     book: Object,
   },
   methods: {
-    showConfirmationDialog() {
-      this.$emit("showConfirmationDialog");
+    deleteBook() {
+      this.$emit("deleteBook");
     },
-    goToEditBook() {
-      this.$router.push({
-        name: "editBookView",
-        params: { bookId: this.book.id },
-      });
+    editBook() {
+      this.$emit("editBook");
     },
   },
 };

@@ -1,20 +1,20 @@
 <template>
-  <ButtonComponent
+  <BaseButton
     class="button-icon"
     :type="type"
     :aria-label="ariaLabel"
     @click="click($event)"
   >
     <slot></slot>
-  </ButtonComponent>
+  </BaseButton>
 </template>
 
 <script>
-import ButtonComponent from "@/components/ui-components/ButtonComponent/ButtonComponent.vue";
+import BaseButton from "@/components/ui-components/BaseButton/BaseButton.vue";
 
 export default {
   name: "ButtonIcon",
-  components: { ButtonComponent },
+  components: { BaseButton },
   props: {
     ariaLabel: {
       type: String,
@@ -33,7 +33,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-@import "ButtonIcon.scss";
-</style>

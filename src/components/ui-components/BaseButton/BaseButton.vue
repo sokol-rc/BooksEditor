@@ -1,17 +1,25 @@
 <template>
-  <button class="button" :type="type" @click="click($event)">
+  <button
+    :class="['button', border ? 'button--border' : '']"
+    :type="type"
+    @click="click($event)"
+  >
     <slot></slot>
   </button>
 </template>
 
 <script>
 export default {
-  name: "ButtonComponent",
+  name: "BaseButton",
   props: {
     type: {
       type: String,
       required: false,
       default: "button",
+    },
+    border: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {
@@ -36,6 +44,10 @@ export default {
   vertical-align: middle;
   cursor: pointer;
   position: relative;
+  border: none;
+}
+
+.button--border {
   border: thin solid;
 }
 

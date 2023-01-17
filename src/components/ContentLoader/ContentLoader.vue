@@ -7,6 +7,12 @@
     <slot v-else-if="status === loadingStatuses.empty" name="empty">
       Ваша библиотека пуста. Пора добавить книг!
     </slot>
+    <slot
+      v-else-if="status === loadingStatuses.searchResultsEmpty"
+      name="searchResultsEmpty"
+    >
+      Не найдено.
+    </slot>
     <slot v-else-if="status === loadingStatuses.error" name="error">
       Произошла ошибка при загрузке данных.
     </slot>
