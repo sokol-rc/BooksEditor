@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "start": "npm run build && npm run preview",
     "preview": "vite preview --port 4173",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier . --write"
@@ -21,7 +22,6 @@
     "eslint": "8.5.0",
     "eslint-plugin-vue": "9.0.0",
     "prettier": "2.5.1",
-    "sass": "1.57.1",
     "terser": "5.14.2",
     "vite": "3.0.2"
   }
