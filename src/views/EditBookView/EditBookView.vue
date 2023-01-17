@@ -1,83 +1,87 @@
 <template>
-  <div class="book">
-    <h1>Редактирование книги: {{ book.title }}</h1>
-    <div class="form">
-      <div class="form__wrapper form__wrapper--background">
-        <div class="form__left-side">
-          <div class="form__group">
-            <UploadInput
-              :preview="book.preview.image"
-              :alt="book.preview.alt"
-              @getImage="setLoadedImage"
-            />
-          </div>
-        </div>
-        <div class="form__right-side">
-          <div class="form__group">
-            <BaseInput
-              v-model="book.title"
-              label="Заголовок"
-              type="text"
-              required
-            />
-          </div>
-          <div class="form__group">
-            <BaseInput
-              v-model="book.authors"
-              label="Фамилия автора(ов) через запятую"
-              type="text"
-              required
-            />
-          </div>
-          <div class="form__group">
-            <BaseInput
-              v-model="book.pages"
-              label="Количество страниц"
-              type="text"
-              required
-            />
-          </div>
-          <div class="form__group">
-            <BaseInput
-              v-model="book.publishedYear"
-              label="Год публикации"
-              type="text"
-            />
-          </div>
-          <div class="form__group">
-            <BaseInput
-              v-model="book.publisher"
-              label="Название издательства"
-              type="text"
-            />
-          </div>
-          <div class="form__group">
-            <BaseInput
-              v-model="book.circulationDate"
-              label="Дата выхода в тираж"
-              type="text"
-            />
-          </div>
-        </div>
-        <div class="form__controls">
-          <ButtonComponent class="save" @click="saveBook"
-            >Сохранить
-          </ButtonComponent>
-          <div
-            :class="[
-              'edit-status',
-              editStatus.success
-                ? 'edit-status--success'
-                : 'edit-status--error',
-            ]"
-            v-if="editStatus"
-          >
-            {{ editStatus?.message }}
+  <ContentLoader :status="loadingStatus">
+    <template #content>
+      <div class="book">
+        <h1>Редактирование книги: {{ book.title }}</h1>
+        <div class="form">
+          <div class="form__wrapper form__wrapper--background">
+            <div class="form__left-side">
+              <div class="form__group">
+                <UploadInput
+                  :preview="book.preview.image"
+                  :alt="book.preview.alt"
+                  @getImage="setLoadedImage"
+                />
+              </div>
+            </div>
+            <div class="form__right-side">
+              <div class="form__group">
+                <BaseInput
+                  v-model="book.title"
+                  label="Заголовок"
+                  type="text"
+                  required
+                />
+              </div>
+              <div class="form__group">
+                <BaseInput
+                  v-model="book.authors"
+                  label="Фамилия автора(ов) через запятую"
+                  type="text"
+                  required
+                />
+              </div>
+              <div class="form__group">
+                <BaseInput
+                  v-model="book.pages"
+                  label="Количество страниц"
+                  type="text"
+                  required
+                />
+              </div>
+              <div class="form__group">
+                <BaseInput
+                  v-model="book.publishedYear"
+                  label="Год публикации"
+                  type="text"
+                />
+              </div>
+              <div class="form__group">
+                <BaseInput
+                  v-model="book.publisher"
+                  label="Название издательства"
+                  type="text"
+                />
+              </div>
+              <div class="form__group">
+                <BaseInput
+                  v-model="book.circulationDate"
+                  label="Дата выхода в тираж"
+                  type="text"
+                />
+              </div>
+            </div>
+            <div class="form__controls">
+              <ButtonComponent class="save" border @click="saveBook"
+                >Сохранить
+              </ButtonComponent>
+              <div
+                :class="[
+                  'edit-status',
+                  editStatus.success
+                    ? 'edit-status--success'
+                    : 'edit-status--error',
+                ]"
+                v-if="editStatus"
+              >
+                {{ editStatus?.message }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </template>
+  </ContentLoader>
 </template>
 
 <script>
@@ -85,18 +89,24 @@ import BaseInput from "@/components/ui-components/BaseInput/BaseInput.vue";
 import { mapActions, mapGetters } from "vuex";
 import UploadInput from "@/components/ui-components/UploadInput/UploadInput.vue";
 import ButtonComponent from "@/components/ui-components/ButtonComponent/ButtonComponent.vue";
-import { GET_BOOK, GET_EDIT_STATUS } from "@/store/types/getters.type";
+import {
+  GET_BOOK,
+  GET_EDIT_STATUS,
+  GET_LOADING_STATUS,
+} from "@/store/types/getters.type";
 import { FETCH_BOOK, SAVE_BOOK, SET_IMAGE } from "@/store/types/actions.type";
+import ContentLoader from "@/components/ContentLoader/ContentLoader.vue";
 
 export default {
   name: "EditBookView",
-  components: { ButtonComponent, UploadInput, BaseInput },
+  components: { ContentLoader, ButtonComponent, UploadInput, BaseInput },
   // почему не [String, Number]?
   props: ["bookId"],
   computed: {
     ...mapGetters("bookItem", {
       book: GET_BOOK,
       editStatus: GET_EDIT_STATUS,
+      loadingStatus: GET_LOADING_STATUS,
     }),
   },
   created() {
