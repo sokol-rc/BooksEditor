@@ -8,8 +8,6 @@ const lazyLoad = (componentName, folder) => {
   return () => import(`@/${folder}/${componentName}/${componentName}.vue`)
 }
 
-//TODO: добавить обработку возврата по истории
-
 const router = new VueRouter({
   mode: 'history',
   routes: [

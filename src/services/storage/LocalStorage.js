@@ -1,5 +1,3 @@
-import { getLastId } from '@/utils/books'
-
 class LocalStorage {
   _isExist(key) {
     return !!window.localStorage[key]
@@ -77,15 +75,13 @@ class LocalStorage {
       return response
     }
     const currentData = response.data[key]
-    const lastId = getLastId(currentData)
-    const newItem = { ...partOfValue, id: lastId + 1 }
 
-    currentData.push(newItem)
+    currentData.push(partOfValue)
 
     this.set(key, { [key]: currentData })
     return {
       success: true,
-      data: newItem,
+      data: partOfValue,
     }
   }
 

@@ -28,3 +28,8 @@ export const withImageAlt = (book, alt) => ({
   ...book,
   preview: { ...book.preview, alt },
 })
+
+export const withLastId = (book, lastId) => ({
+  ...book,
+  id: lastId,
+})

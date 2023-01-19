@@ -4,7 +4,7 @@ import { SET_BOOK, SET_LOADING_STATUS, SET_SAVE_STATUS } from '@/store/types/mut
 import { GET_BOOK, GET_LOADING_STATUS, GET_SAVE_STATUS } from '@/store/types/getters.type'
 import { CHANGE_SAVE_STATUS, FETCH_BOOK, PREPARE_NEW_BOOK, SAVE_BOOK, SAVE_NEW_BOOK } from '@/store/types/actions.type'
 import { callStorage } from '@/helpers/callStorage'
-import { withImageAlt } from '@/utils/books'
+import { getLastId, withImageAlt, withLastId } from '@/utils/books'
 
 export default {
   namespaced: true,
@@ -31,16 +31,20 @@ export default {
   },
   actions: {
     [FETCH_BOOK]({ commit }, bookId) {
-      const { data } = callStorage({
-        key: 'books',
-        fetchMethod: 'getById',
-        fetchParam: bookId,
-        commit,
-        statusName: SET_LOADING_STATUS,
-        types: [loadingStatuses.loading, loadingStatuses.error],
-      })
-      commit(SET_BOOK, data)
-      commit(SET_LOADING_STATUS, loadingStatuses.ready)
+      try {
+        const { data } = callStorage({
+          key: 'books',
+          fetchMethod: 'getById',
+          fetchParam: bookId,
+          commit,
+          statusName: SET_LOADING_STATUS,
+          types: [loadingStatuses.loading, loadingStatuses.error],
+        })
+        commit(SET_BOOK, data)
+        commit(SET_LOADING_STATUS, loadingStatuses.ready)
+      } catch (e) {
+        commit(SET_LOADING_STATUS, loadingStatuses.error)
+      }
     },
     [PREPARE_NEW_BOOK]({ commit }) {
       commit(SET_LOADING_STATUS, loadingStatuses.ready)
@@ -58,17 +62,42 @@ export default {
         id: 0,
       })
     },
-    [SAVE_BOOK]({ dispatch }, book) {
-      LocalStorage.change('books', withImageAlt(book))
-      dispatch(CHANGE_SAVE_STATUS, { success: true, message: 'Сохранено' })
+    [SAVE_BOOK]({ dispatch, commit }, book) {
+      try {
+        LocalStorage.change('books', withImageAlt(book))
+        dispatch(CHANGE_SAVE_STATUS, { success: true, message: 'Сохранено' })
+      } catch (e) {
+        commit(SET_LOADING_STATUS, loadingStatuses.error)
+      }
     },
     [CHANGE_SAVE_STATUS]({ commit }, status) {
       commit(SET_SAVE_STATUS, status)
     },
     [SAVE_NEW_BOOK]({ dispatch, commit }, book) {
-      const response = LocalStorage.add('books', withImageAlt(book))
-      commit(SET_BOOK, response.data)
-      dispatch(CHANGE_SAVE_STATUS, { success: true, message: 'Добавлено' })
+      try {
+        const { data } = callStorage({
+          key: 'books',
+          fetchMethod: 'getAll',
+          fetchParam: {},
+          commit,
+          statusName: SET_LOADING_STATUS,
+          types: [loadingStatuses.loading, loadingStatuses.error],
+        })
+        const { books } = data
+
+        const lastId = getLastId(books)
+        const altImageTemplate = `Обложка книги «${book.title}»`
+
+        let prepareBook = withLastId(book, lastId + 1)
+        prepareBook = withImageAlt(prepareBook, altImageTemplate)
+
+        const response = LocalStorage.add('books', prepareBook)
+        commit(SET_BOOK, response.data)
+        commit(SET_LOADING_STATUS, loadingStatuses.ready)
+        dispatch(CHANGE_SAVE_STATUS, { success: true, message: 'Добавлено' })
+      } catch (e) {
+        commit(SET_LOADING_STATUS, loadingStatuses.error)
+      }
     },
   },
 }

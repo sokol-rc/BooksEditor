@@ -92,67 +92,83 @@ export default {
     [GET_SEARCH_QUERY]: (state) => state.searchQuery,
   },
   actions: {
-    [SET_INITIAL_DATA]({ dispatch }) {
-      LocalStorage.set('books', initialData)
-      dispatch(FETCH_BOOKS, { pageNumber: 1 })
+    [SET_INITIAL_DATA]({ dispatch, commit }) {
+      try {
+        LocalStorage.set('books', initialData)
+        dispatch(FETCH_BOOKS, { pageNumber: 1 })
+      } catch (e) {
+        commit(SET_LOADING_STATUS, loadingStatuses.error)
+      }
     },
-    [CLEAR_STORAGE]({ dispatch }) {
-      LocalStorage.clear()
-      dispatch(RESET_BOOKS_STATE)
+    [CLEAR_STORAGE]({ dispatch, commit }) {
+      try {
+        LocalStorage.clear()
+        dispatch(RESET_BOOKS_STATE)
+      } catch (e) {
+        commit(SET_LOADING_STATUS, loadingStatuses.error)
+      }
     },
     [RESET_BOOKS_STATE]({ commit }) {
       commit(RESET_BOOKS_STATE)
       commit(SET_LOADING_STATUS, loadingStatuses.error)
     },
     [FETCH_BOOKS]({ commit, state }, { pageNumber } = { pageNumber: 1 }) {
-      const { data } = callStorage({
-        key: 'books',
-        fetchMethod: 'getAll',
-        fetchParam: {},
-        commit,
-        statusName: SET_LOADING_STATUS,
-        types: [loadingStatuses.loading, loadingStatuses.error],
-      })
-      if (state.loadingStatus === loadingStatuses.error) {
-        return
+      try {
+        const { data } = callStorage({
+          key: 'books',
+          fetchMethod: 'getAll',
+          fetchParam: {},
+          commit,
+          statusName: SET_LOADING_STATUS,
+          types: [loadingStatuses.loading, loadingStatuses.error],
+        })
+        if (state.loadingStatus === loadingStatuses.error) {
+          return
+        }
+
+        const start = (pageNumber - 1) * state.booksPerPage
+        const end = start + state.booksPerPage
+        let { books } = data
+
+        if (state.searchQuery !== '') {
+          books = searchBooks(books, state.searchQuery)
+        }
+
+        const [sortKey, sortDir] = state.currentSort.split(':')
+        books = sortBooks(books, sortKey, sortDir)
+
+        if (state.searchQuery !== '' && !books.length) {
+          commit(SET_LOADING_STATUS, loadingStatuses.searchResultsEmpty)
+        } else if (!books.length) {
+          commit(SET_LOADING_STATUS, loadingStatuses.empty)
+        } else {
+          commit(SET_LOADING_STATUS, loadingStatuses.ready)
+        }
+
+        commit(SET_BOOKS, books.slice(start, end))
+        commit(SET_BOOKS_COUNT, books.length)
+      } catch (e) {
+        commit(SET_LOADING_STATUS, loadingStatuses.error)
       }
-
-      const start = (pageNumber - 1) * state.booksPerPage
-      const end = start + state.booksPerPage
-      let { books } = data
-
-      if (state.searchQuery !== '') {
-        books = searchBooks(books, state.searchQuery)
-      }
-
-      const [sortKey, sortDir] = state.currentSort.split(':')
-      books = sortBooks(books, sortKey, sortDir)
-
-      if (state.searchQuery !== '' && !books.length) {
-        commit(SET_LOADING_STATUS, loadingStatuses.searchResultsEmpty)
-      } else if (!books.length) {
-        commit(SET_LOADING_STATUS, loadingStatuses.empty)
-      } else {
-        commit(SET_LOADING_STATUS, loadingStatuses.ready)
-      }
-
-      commit(SET_BOOKS, books.slice(start, end))
-      commit(SET_BOOKS_COUNT, books.length)
     },
     [DELETE_BOOK_BY_ID]({ dispatch, commit, state }, bookId) {
-      let { data } = callStorage({
-        key: 'books',
-        fetchMethod: 'getAll',
-        fetchParams: {},
-        commit,
-        statusName: SET_LOADING_STATUS,
-        types: [loadingStatuses.loading, loadingStatuses.error],
-      })
-      const newBooks = data.books.filter((b) => b.id !== bookId)
+      try {
+        let { data } = callStorage({
+          key: 'books',
+          fetchMethod: 'getAll',
+          fetchParams: {},
+          commit,
+          statusName: SET_LOADING_STATUS,
+          types: [loadingStatuses.loading, loadingStatuses.error],
+        })
+        const newBooks = data.books.filter((b) => b.id !== bookId)
 
-      LocalStorage.set('books', { books: newBooks })
+        LocalStorage.set('books', { books: newBooks })
 
-      dispatch(FETCH_BOOKS, { pageNumber: state.currentPage })
+        dispatch(FETCH_BOOKS, { pageNumber: state.currentPage })
+      } catch (e) {
+        commit(SET_LOADING_STATUS, loadingStatuses.error)
+      }
     },
     [CHANGE_CURRENT_SORT]({ commit }, newSort) {
       commit(SET_CURRENT_SORT, newSort)
