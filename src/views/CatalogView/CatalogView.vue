@@ -139,7 +139,6 @@ export default {
       })
     },
     paginate(pageTo) {
-      console.log(this.query)
       if (this.query) {
         this.$router.push({ name: 'search', query: { q: this.query, page: pageTo } })
       } else {

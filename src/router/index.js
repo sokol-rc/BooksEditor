@@ -30,6 +30,9 @@ const router = new VueRouter({
           name: 'booksCatalog',
           component: lazyLoad('CatalogView', 'views'),
           props: true,
+          meta: {
+            title: 'Каталог книг',
+          },
         },
       ],
     },

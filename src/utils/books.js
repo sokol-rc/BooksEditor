@@ -21,7 +21,6 @@ export const searchBooks = (array, searchQuery) =>
 
 export const getLastId = (array) => {
   const sorted = sortBooks(array, 'id', 'desc')
-  console.log(sorted)
   return sorted[0].id
 }
 
