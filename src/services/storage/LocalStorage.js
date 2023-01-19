@@ -9,13 +9,9 @@ class LocalStorage {
 
   getAll(key) {
     if (!this._isExist(key)) {
-      return {
-        success: false,
-        data: {},
-      }
+      return
     }
     return {
-      success: true,
       data: JSON.parse(this._localStorageGet(key)),
     }
   }
@@ -23,21 +19,19 @@ class LocalStorage {
   getById(key, id) {
     const response = this.getAll(key)
 
-    if (!response.success) {
-      return response
+    if (!response) {
+      return
     }
 
     const filteredData = response.data[key].find((a) => a.id === id)
 
     if (!filteredData) {
       return {
-        success: false,
         data: {},
       }
     }
 
     return {
-      success: true,
       data: filteredData,
     }
   }
@@ -48,15 +42,13 @@ class LocalStorage {
 
   change(key, partOfValue) {
     const response = this.getAll(key)
-    let success = false
 
-    if (!response.success) {
-      return response
+    if (!response) {
+      return
     }
 
     const newData = response.data[key].map((item) => {
       if (item.id === partOfValue.id) {
-        success = true
         return { ...partOfValue }
       }
       return item
@@ -64,15 +56,14 @@ class LocalStorage {
 
     this.set(key, { [key]: newData })
     return {
-      success,
       data: newData,
     }
   }
 
   add(key, partOfValue) {
     const response = this.getAll(key)
-    if (!response.success) {
-      return response
+    if (!response) {
+      return
     }
     const currentData = response.data[key]
 
@@ -80,7 +71,6 @@ class LocalStorage {
 
     this.set(key, { [key]: currentData })
     return {
-      success: true,
       data: partOfValue,
     }
   }

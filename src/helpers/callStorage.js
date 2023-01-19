@@ -15,7 +15,7 @@ export const callStorage = (args) => {
       response = LocalStorage.getById(key, fetchParam)
       break
   }
-  if (!response.success) {
+  if (!response) {
     commit(statusName, error)
   }
 

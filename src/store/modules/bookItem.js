@@ -92,8 +92,14 @@ export default {
         prepareBook = withImageAlt(prepareBook, altImageTemplate)
 
         const response = LocalStorage.add('books', prepareBook)
+
+        if (!response) {
+          commit(SET_LOADING_STATUS, loadingStatuses.error)
+        }
+
         commit(SET_BOOK, response.data)
         commit(SET_LOADING_STATUS, loadingStatuses.ready)
+
         dispatch(CHANGE_SAVE_STATUS, { success: true, message: 'Добавлено' })
       } catch (e) {
         commit(SET_LOADING_STATUS, loadingStatuses.error)
