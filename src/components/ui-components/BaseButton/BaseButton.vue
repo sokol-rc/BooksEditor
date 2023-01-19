@@ -1,21 +1,17 @@
 <template>
-  <button
-    :class="['button', border ? 'button--border' : '']"
-    :type="type"
-    @click="click($event)"
-  >
+  <button :class="['button', border ? 'button--border' : '']" :type="type" @click="click($event)">
     <slot></slot>
   </button>
 </template>
 
 <script>
 export default {
-  name: "BaseButton",
+  name: 'BaseButton',
   props: {
     type: {
       type: String,
       required: false,
-      default: "button",
+      default: 'button',
     },
     border: {
       type: Boolean,
@@ -24,10 +20,10 @@ export default {
   },
   methods: {
     click(e) {
-      this.$emit("click", e);
+      this.$emit('click', e)
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -52,7 +48,7 @@ export default {
 }
 
 .button::before {
-  content: "";
+  content: '';
   background-color: currentColor;
   position: absolute;
   top: 0;
@@ -65,5 +61,12 @@ export default {
 
 .button:hover::before {
   opacity: 0.1;
+}
+.button:disabled {
+  color: rgba(0, 0, 0, 0.26);
+  box-shadow: none;
+  background-color: rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+  cursor: default;
 }
 </style>

@@ -3,21 +3,21 @@
     <HeaderComponent />
     <main class="content">
       <div class="layout-container">
-        <router-view></router-view>
+        <router-view />
       </div>
     </main>
   </div>
 </template>
 
 <script>
-import HeaderComponent from "@/components/Header/HeaderComponent.vue";
-import "@/main.scss";
+import HeaderComponent from '@/components/Header/HeaderComponent.vue'
+import '@/main.scss'
 
 export default {
   components: {
     HeaderComponent,
   },
-};
+}
 </script>
 
 <style scoped>

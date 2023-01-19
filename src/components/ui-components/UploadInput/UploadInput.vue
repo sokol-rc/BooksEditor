@@ -1,13 +1,7 @@
 <template>
   <div class="upload-input">
     <label for="upload-input">
-      <input
-        id="upload-input"
-        class="upload-input__input"
-        type="file"
-        @change="makePreviewImage"
-        accept="image/*"
-      />
+      <input id="upload-input" class="upload-input__input" type="file" @change="makePreviewImage" accept="image/*" />
       <span class="upload-input__label">Выберите изображение</span>
     </label>
     <div v-if="preview" class="preview">
@@ -18,30 +12,30 @@
 
 <script>
 export default {
-  name: "UploadInput",
+  name: 'UploadInput',
   props: {
     preview: {
       type: String,
-      default: "",
+      default: '',
     },
     alt: {
       type: String,
-      default: "Изображение",
+      default: 'Изображение',
     },
   },
   methods: {
     makePreviewImage(event) {
-      const input = event.target;
+      const input = event.target
       if (input.files && input.files[0]) {
-        let reader = new FileReader();
+        let reader = new FileReader()
         reader.onload = (e) => {
-          this.$emit("getImage", e.target.result);
-        };
-        reader.readAsDataURL(input.files[0]);
+          this.$emit('getImage', e.target.result)
+        }
+        reader.readAsDataURL(input.files[0])
       }
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

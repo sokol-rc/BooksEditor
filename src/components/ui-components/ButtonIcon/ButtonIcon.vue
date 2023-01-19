@@ -1,19 +1,14 @@
 <template>
-  <BaseButton
-    class="button-icon"
-    :type="type"
-    :aria-label="ariaLabel"
-    @click="click($event)"
-  >
+  <BaseButton class="button-icon" :type="type" :aria-label="ariaLabel" @click="click($event)">
     <slot></slot>
   </BaseButton>
 </template>
 
 <script>
-import BaseButton from "@/components/ui-components/BaseButton/BaseButton.vue";
+import BaseButton from '@/components/ui-components/BaseButton/BaseButton.vue'
 
 export default {
-  name: "ButtonIcon",
+  name: 'ButtonIcon',
   components: { BaseButton },
   props: {
     ariaLabel: {
@@ -23,13 +18,13 @@ export default {
     type: {
       type: String,
       required: false,
-      default: "button",
+      default: 'button',
     },
   },
   methods: {
     click(e) {
-      this.$emit("click", e);
+      this.$emit('click', e)
     },
   },
-};
+}
 </script>

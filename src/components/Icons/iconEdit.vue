@@ -1,10 +1,5 @@
 <template>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    :width="24"
-    :height="24"
-    viewBox="0 0 24 24"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" :width="24" :height="24" viewBox="0 0 24 24">
     <g>
       <path
         d="M3.99512 17.2072V19.5C3.99512 19.7761 4.21897 20 4.49512 20H6.79289C6.9255 20 7.05268 19.9473 7.14645 19.8536L16.5942 10.4058L13.5935 7.40518L4.14163 16.8535C4.04782 16.9473 3.99512 17.0745 3.99512 17.2072Z"
@@ -18,8 +13,8 @@
 
 <script>
 export default {
-  name: "IconEdit",
-};
+  name: 'IconEdit',
+}
 </script>
 
 <style scoped>

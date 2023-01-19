@@ -8,16 +8,16 @@
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### запуск версии для разработчика с Hot module replacement
 
 ```sh
 npm run dev
 ```
 
-### Compile and Minify for Production
+### запуск стабильной версии
 
 ```sh
-npm run build
+npm run start
 ```
 
 # Задача

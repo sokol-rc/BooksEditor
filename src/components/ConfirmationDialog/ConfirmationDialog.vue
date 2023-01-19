@@ -5,20 +5,8 @@
         <div class="card__title">Удалить эту книгу?</div>
         <slot></slot>
         <div class="card__actions">
-          <button
-            type="button"
-            class="card__button button"
-            @click="handleReject"
-          >
-            Отмена
-          </button>
-          <button
-            type="button"
-            class="card__button button"
-            @click="handleAccept"
-          >
-            Подтверждаю
-          </button>
+          <button type="button" class="card__button button" @click="handleReject">Отмена</button>
+          <button type="button" class="card__button button" @click="handleAccept">Подтверждаю</button>
         </div>
       </div>
     </div>
@@ -27,27 +15,27 @@
 
 <script>
 export default {
-  name: "ConfirmationDialog",
+  name: 'ConfirmationDialog',
   mounted() {
-    document.addEventListener("keydown", this.handleEscape);
+    document.addEventListener('keydown', this.handleEscape)
   },
   beforeDestroy() {
-    document.removeEventListener("keydown", this.handleEscape);
+    document.removeEventListener('keydown', this.handleEscape)
   },
   methods: {
     handleReject() {
-      this.$emit("handleReject");
+      this.$emit('handleReject')
     },
     handleAccept() {
-      this.$emit("handleAccept");
+      this.$emit('handleAccept')
     },
     handleEscape(e) {
-      if (e.code === "Escape") {
-        this.handleReject();
+      if (e.code === 'Escape') {
+        this.handleReject()
       }
     },
   },
-};
+}
 </script>
 
 <style scoped lang="scss">
@@ -55,8 +43,7 @@ $modalColor: rgb(25, 118, 210);
 $cardBackgroundColor: #fff;
 $cardColor: #000;
 $modalShadowColor: rgba(0, 0, 0, 0.5);
-$shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2),
-  0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12);
+$shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2), 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12);
 
 .dialog-shadow {
   display: flex;
@@ -130,7 +117,7 @@ $shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2),
 .button::before {
   background-color: currentColor;
   bottom: 0;
-  content: "";
+  content: '';
   left: 0;
   opacity: 0;
   pointer-events: none;

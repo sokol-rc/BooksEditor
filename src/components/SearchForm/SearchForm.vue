@@ -1,93 +1,78 @@
 <template>
   <div class="search">
-    <div class="search__wrapper search__wrapper--background">
-      <form class="search__form" @submit.prevent="handleSubmit">
-        <label class="search__label visually-hidden" for="search-input"
-          >Найти книгу</label
-        >
-        <input
-          class="search__input"
-          v-focus="isFocused"
-          id="search-input"
-          type="search"
-          v-model.trim="searchQuery"
-          placeholder="Найти книгу"
-        />
-        <ButtonIcon type="submit">
-          <IconEdit />
-        </ButtonIcon>
-      </form>
-    </div>
+    <form class="search__form" @submit.prevent="handleSubmit">
+      <label class="search__label visually-hidden" for="search-input">Найти книгу</label>
+      <input
+        class="search__input"
+        v-focus="isFocused"
+        id="search-input"
+        type="search"
+        v-model.trim="searchQuery"
+        placeholder="Найти книгу"
+      />
+      <ButtonIcon type="submit">
+        <IconSearch />
+      </ButtonIcon>
+    </form>
   </div>
 </template>
 
 <script>
-import ButtonIcon from "@/components/ui-components/ButtonIcon/ButtonIcon.vue";
-import IconEdit from "@/components/icons/iconEdit.vue";
-import Vue from "vue";
+import ButtonIcon from '@/components/ui-components/ButtonIcon/ButtonIcon.vue'
+import IconEdit from '@/components/Icons/iconEdit.vue'
+import Vue from 'vue'
+import IconSearch from '@/components/Icons/IconSearch.vue'
 
-Vue.directive("focus", {
+Vue.directive('focus', {
   inserted: function (el) {
-    el.focus();
+    el.focus()
   },
-});
+})
 
 export default {
-  name: "SearchForm",
-  components: { IconEdit, ButtonIcon },
+  name: 'SearchForm',
+  components: { IconSearch, IconEdit, ButtonIcon },
   data() {
     return {
       searchQuery: this.query,
       isFocused: false,
-    };
+    }
   },
   props: {
     query: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   computed: {
     urlQuery() {
       //need to encode string?
-      return this.searchQuery;
+      return this.searchQuery
     },
   },
   methods: {
     handleSubmit() {
-      this.$emit("handleSubmit", this.urlQuery);
+      this.$emit('handleSubmit', this.urlQuery)
     },
     setFocusToInput() {
-      this.isFocused = true;
+      this.isFocused = true
     },
   },
-};
+}
 </script>
 
 <style scoped lang="scss">
-$shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
-$cardBackgroundColor: #fff;
-
 .search {
-  margin-bottom: 10px;
-
-  &__wrapper {
-    display: flex;
-    padding: 16px;
-  }
-
-  &__wrapper--background {
-    background-color: $cardBackgroundColor;
-    border-radius: 8px;
-    box-shadow: $shadow;
-  }
-
+  display: flex;
+  align-items: center;
   &__form {
     position: relative;
   }
 
   &__input {
+    height: 36px;
     padding: 6px 10px;
+    margin-right: 10px;
   }
 }
 </style>
