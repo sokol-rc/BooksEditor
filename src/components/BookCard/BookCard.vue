@@ -1,27 +1,17 @@
 <template>
   <div class="book">
     <div class="book__image">
-      <img
-        class="image-responsive"
-        :src="book.preview.image"
-        :alt="book.preview.alt"
-      />
+      <img class="image-responsive" :src="book.preview.image" :alt="book.preview.alt" />
     </div>
     <div class="book__info">
       <h2 class="book__title">{{ book.title }}</h2>
-      <div class="book__author">Автор: {{ book.authors }}</div>
+      <div class="book__author">Автор: {{ `${book.authorFirstName} ${book.authorLastName}` }}</div>
     </div>
     <div class="book__info">
       <ul class="info">
-        <li class="info__item" v-if="book.publisher">
-          Издательство: {{ book.publisher }}
-        </li>
-        <li class="info__item-year" v-if="book.publishedYear">
-          Год публикации: {{ book.publishedYear }}
-        </li>
-        <li class="info__item" v-if="book.circulationDate">
-          Выход в тираж: {{ book.circulationDate }}
-        </li>
+        <li class="info__item" v-if="book.publisher">Издательство: {{ book.publisher }}</li>
+        <li class="info__item-year" v-if="book.publishedYear">Год публикации: {{ book.publishedYear }}</li>
+        <li class="info__item" v-if="book.circulationDate">Выход в тираж: {{ book.circulationDate }}</li>
         <li class="info__item" v-if="book.pages">Страниц: {{ book.pages }}</li>
       </ul>
     </div>
@@ -37,25 +27,25 @@
 </template>
 
 <script>
-import IconDelete from "@/components/icons/IconDelete.vue";
-import ButtonIcon from "@/components/ui-components/ButtonIcon/ButtonIcon.vue";
-import IconEdit from "@/components/icons/iconEdit.vue";
+import IconDelete from '@/components/Icons/IconDelete.vue'
+import ButtonIcon from '@/components/ui-components/ButtonIcon/ButtonIcon.vue'
+import IconEdit from '@/components/Icons/iconEdit.vue'
 
 export default {
-  name: "BookCard",
+  name: 'BookCard',
   components: { IconEdit, IconDelete, ButtonIcon },
   props: {
     book: Object,
   },
   methods: {
     deleteBook() {
-      this.$emit("deleteBook");
+      this.$emit('deleteBook')
     },
     editBook() {
-      this.$emit("editBook");
+      this.$emit('editBook')
     },
   },
-};
+}
 </script>
 
 <style scoped lang="scss">
@@ -66,7 +56,9 @@ export default {
 .book {
   grid-gap: 12px 0;
   display: grid;
-  grid-template-columns: auto minmax(200px, 1fr) minmax(200px, 1fr) 100px;
+  grid-template-columns:
+    minmax(100px, auto) minmax(200px, 1fr) minmax(200px, 1fr)
+    100px;
   padding: 24px 16px;
 
   &__image {
@@ -83,7 +75,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-width: 360px;
+    min-width: 280px;
     padding-bottom: 30px;
   }
 
@@ -95,7 +87,11 @@ export default {
     max-width: 100px;
     display: flex;
     align-items: flex-start;
-    justify-content: space-between;
+    flex-direction: column;
+
+    .button-icon + .button-icon {
+      margin-top: 20px;
+    }
   }
 }
 
